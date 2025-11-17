@@ -17,7 +17,7 @@ public class Category implements Serializable {
     
     @Column(name = "category_name")
     private String categoryName;
-   
+
     @Column(name = "category_image")
     private String categoryImage;
     
