@@ -28,9 +28,9 @@ export default function Navbar() {
 
         <ul className={`nav-links ${isOpen ? 'active' : ''}`}>
           <li><Link to="/" onClick={closeMenu}>Home</Link></li>
-          <li><Link to="/products" onClick={closeMenu}>Products</Link></li>
           <li><Link to="/cart" onClick={closeMenu}>Cart</Link></li>
           <li><Link to="/orders" onClick={closeMenu}>Orders</Link></li>
+          <li><Link to="/login" onClick={closeMenu}>Login</Link></li>
         </ul>
       </div>
     </nav>
