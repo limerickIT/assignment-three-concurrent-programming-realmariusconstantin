@@ -9,7 +9,7 @@ export default function ProductCard({ id, name, description, price }) {
         <h3>{name}</h3>
         <p className="description">{description}</p>
         <p className="price">${price}</p>
-        <Link to={`/products/${id}`} className="btn-details">
+        <Link to={`/product/${id}`} className="btn-details">
           View Details
         </Link>
       </div>

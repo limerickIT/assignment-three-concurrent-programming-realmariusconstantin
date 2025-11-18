@@ -20,16 +20,11 @@ export default function CategoryProducts() {
       const categoryResponse = await productService.getCategoryById(categoryId);
       setCategory(categoryResponse.data);
       
-      // Fetch all products and filter by category
-      const productsResponse = await productService.getAllProducts();
-      const allProducts = Array.isArray(productsResponse.data) ? productsResponse.data : [];
+      // Fetch products by category from backend
+      const productsResponse = await productService.getProductsByCategory(categoryId);
+      const productsList = Array.isArray(productsResponse.data) ? productsResponse.data : [];
       
-      // Filter products by category
-      const filteredProducts = allProducts.filter(
-        product => product.categoryId === parseInt(categoryId)
-      );
-      
-      setProducts(filteredProducts);
+      setProducts(productsList);
       setError(null);
     } catch (err) {
       console.error('Error fetching data:', err);
