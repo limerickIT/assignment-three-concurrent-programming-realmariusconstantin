@@ -1,6 +1,7 @@
 package com.example.assignment_three_zelora.model.entitys;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.List;
@@ -22,6 +23,7 @@ public class Category implements Serializable {
     private String categoryImage;
     
     @OneToMany(mappedBy = "categoryId")
+    @JsonIgnore
     private List<Product> productList;
 
     public Category(Integer categoryId, String categoryName, String categoryImage, List<Product> productList) {

@@ -1,6 +1,7 @@
 package com.example.assignment_three_zelora.model.entitys;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -56,19 +57,24 @@ public class Product implements Serializable {
     private String featureImage;
    
     @OneToMany(mappedBy = "productId")
+    @JsonIgnore
     private List<Orderitem> orderitemList;
     
     @OneToMany(mappedBy = "productId")
+    @JsonIgnore
     private List<Review> reviewList;
    
     @OneToMany(mappedBy = "productId")
+    @JsonIgnore
     private List<Wishlist> wishlistList;
    
     @OneToMany(mappedBy = "productId")
+    @JsonIgnore
     private List<Inventory> inventoryList;
    
     @JoinColumn(name = "supplier_Id", referencedColumnName = "supplier_id")
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Supplier supplierId;
    
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
