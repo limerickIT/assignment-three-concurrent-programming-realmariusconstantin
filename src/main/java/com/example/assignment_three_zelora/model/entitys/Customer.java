@@ -12,7 +12,7 @@ import java.util.List;
 public class Customer implements Serializable {
 
     @Id
-    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
     private Integer customerId;
     
@@ -27,6 +27,9 @@ public class Customer implements Serializable {
    
     @Column(name = "password")
     private String password;
+    
+    @Column(name = "role")
+    private String role;
    
     @Lob
     @Column(name = "address")
@@ -69,12 +72,13 @@ public class Customer implements Serializable {
     @OneToMany(mappedBy = "customerId")
     private List<Orders> ordersList;
 
-    public Customer(Integer customerId, String firstName, String lastName, String email, String password, String address, String phoneNumber, Date dateOfBirth, String paymentInfo, String sizePreferences, String vipStatus, String communicationPreferences, Date dateJoined, String city, List<Review> reviewList, List<Wishlist> wishlistList, List<Orders> ordersList) {
+    public Customer(Integer customerId, String firstName, String lastName, String email, String password, String role, String address, String phoneNumber, Date dateOfBirth, String paymentInfo, String sizePreferences, String vipStatus, String communicationPreferences, Date dateJoined, String city, List<Review> reviewList, List<Wishlist> wishlistList, List<Orders> ordersList) {
         this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.role = role;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
@@ -178,6 +182,14 @@ public class Customer implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return this.role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public void setAddress(String address) {
