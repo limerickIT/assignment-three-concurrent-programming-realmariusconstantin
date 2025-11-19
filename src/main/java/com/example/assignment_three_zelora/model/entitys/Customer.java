@@ -1,6 +1,7 @@
 package com.example.assignment_three_zelora.model.entitys;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -64,12 +65,15 @@ public class Customer implements Serializable {
     private String city;
    
     @OneToMany(mappedBy = "customerId")
+    @JsonIgnore
     private List<Review> reviewList;
    
     @OneToMany(mappedBy = "customerId")
+    @JsonIgnore
     private List<Wishlist> wishlistList;
     
     @OneToMany(mappedBy = "customerId")
+    @JsonIgnore
     private List<Orders> ordersList;
 
     public Customer(Integer customerId, String firstName, String lastName, String email, String password, String role, String address, String phoneNumber, Date dateOfBirth, String paymentInfo, String sizePreferences, String vipStatus, String communicationPreferences, Date dateJoined, String city, List<Review> reviewList, List<Wishlist> wishlistList, List<Orders> ordersList) {

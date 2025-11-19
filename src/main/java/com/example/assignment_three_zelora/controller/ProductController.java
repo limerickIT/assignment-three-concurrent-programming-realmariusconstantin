@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
     
     @Autowired
@@ -41,6 +42,8 @@ public class ProductController {
             if (productDetails.getProductName() != null) p.setProductName(productDetails.getProductName());
             if (productDetails.getDescription() != null) p.setDescription(productDetails.getDescription());
             if (productDetails.getPrice() != null) p.setPrice(productDetails.getPrice());
+            if (productDetails.getFeatureImage() != null) p.setFeatureImage(productDetails.getFeatureImage());
+            if (productDetails.getCategoryId() != null) p.setCategoryId(productDetails.getCategoryId());
             return productRepository.save(p);
         }
         return null;
