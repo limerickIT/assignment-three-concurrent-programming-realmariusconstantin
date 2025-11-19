@@ -59,6 +59,7 @@ export default function CategoryProducts() {
               name={product.productName}
               description={product.description}
               price={product.price}
+              featureImage={product.featureImage}
             />
           ))}
         </div>
