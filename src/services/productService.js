@@ -5,13 +5,19 @@ const productService = {
   getAllProducts: () => axiosClient.get('/products'),
   
   // Search products by query
-  searchProducts: (query) => axiosClient.get(`/products/search?query=${query}`),
+  searchProducts: (query) => axiosClient.get(`/products/search?query=${encodeURIComponent(query)}`),
+  
+  // Get product suggestions (random products)
+  getProductSuggestions: (limit = 8) => axiosClient.get(`/products/suggestions?limit=${limit}`),
   
   // Get product by ID
   getProductById: (id) => axiosClient.get(`/products/${id}`),
   
   // Get all categories
   getAllCategories: () => axiosClient.get('/categories'),
+  
+  // Alias for getAllCategories
+  getCategories: () => axiosClient.get('/categories'),
   
   // Get category by ID
   getCategoryById: (categoryId) => axiosClient.get(`/categories/${categoryId}`),

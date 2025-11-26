@@ -1,0 +1,318 @@
+/* ==========================================
+   BUTTON COMPONENT - ZELORA DESIGN SYSTEM
+   Consistent button styles across the app
+   ========================================== */
+
+/* Base Button Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-xl);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family);
+  line-height: 1;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(45, 157, 120, 0.4);
+}
+
+/* Disabled State */
+.btn:disabled,
+.btn.btn-loading {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Full Width */
+.btn-full {
+  width: 100%;
+}
+
+/* ==========================================
+   BUTTON VARIANTS
+   ========================================== */
+
+/* Primary - Main CTA */
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow), var(--shadow-md);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Secondary - Blue accent */
+.btn-secondary {
+  background: var(--color-secondary);
+  color: var(--color-bg-main);
+  border-color: var(--color-secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--color-secondary-dark);
+  border-color: var(--color-secondary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(88, 166, 255, 0.3), var(--shadow-md);
+}
+
+/* Outline - Bordered */
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: var(--color-primary);
+  color: white;
+  box-shadow: var(--shadow-glow);
+}
+
+/* Outline Light - Lighter border for dark backgrounds */
+.btn-outline-light {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+.btn-outline-light:hover:not(:disabled) {
+  background: var(--color-bg-hover);
+  color: var(--color-text-main);
+  border-color: var(--color-border-accent);
+}
+
+/* Ghost - No border */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-color: transparent;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--color-bg-hover);
+  color: var(--color-text-main);
+}
+
+/* Danger - Red destructive */
+.btn-danger {
+  background: var(--color-danger);
+  color: white;
+  border-color: var(--color-danger);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #dc2626;
+  border-color: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(248, 81, 73, 0.3), var(--shadow-md);
+}
+
+/* Danger Outline */
+.btn-danger-outline {
+  background: transparent;
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.btn-danger-outline:hover:not(:disabled) {
+  background: var(--color-danger);
+  color: white;
+}
+
+/* Success - Green */
+.btn-success {
+  background: var(--color-success);
+  color: white;
+  border-color: var(--color-success);
+}
+
+.btn-success:hover:not(:disabled) {
+  background: #2f9e44;
+  border-color: #2f9e44;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(63, 185, 80, 0.3), var(--shadow-md);
+}
+
+/* Warning - Yellow/Gold */
+.btn-warning {
+  background: var(--color-warning);
+  color: var(--color-bg-main);
+  border-color: var(--color-warning);
+}
+
+.btn-warning:hover:not(:disabled) {
+  background: #b38600;
+  border-color: #b38600;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(210, 153, 34, 0.3), var(--shadow-md);
+}
+
+/* Gold - Premium accent */
+.btn-gold {
+  background: linear-gradient(135deg, var(--color-accent-gold) 0%, #c4956a 100%);
+  color: var(--color-bg-main);
+  border-color: var(--color-accent-gold);
+}
+
+.btn-gold:hover:not(:disabled) {
+  background: linear-gradient(135deg, #c4956a 0%, var(--color-accent-gold) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(212, 165, 116, 0.3), var(--shadow-md);
+}
+
+/* ==========================================
+   BUTTON SIZES
+   ========================================== */
+
+.btn-xs {
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--font-size-xs);
+  gap: var(--space-xs);
+}
+
+.btn-sm {
+  padding: var(--space-sm) var(--space-lg);
+  font-size: var(--font-size-sm);
+  gap: var(--space-xs);
+}
+
+.btn-lg {
+  padding: var(--space-lg) var(--space-2xl);
+  font-size: var(--font-size-lg);
+}
+
+.btn-xl {
+  padding: var(--space-xl) var(--space-3xl);
+  font-size: var(--font-size-lg);
+  border-radius: var(--radius-lg);
+}
+
+/* Icon Button (square) */
+.btn-icon {
+  padding: var(--space-md);
+  width: 44px;
+  height: 44px;
+}
+
+.btn-icon.btn-sm {
+  width: 36px;
+  height: 36px;
+  padding: var(--space-sm);
+}
+
+.btn-icon.btn-lg {
+  width: 52px;
+  height: 52px;
+  padding: var(--space-lg);
+}
+
+/* ==========================================
+   BUTTON ICONS
+   ========================================== */
+
+.btn-icon-left,
+.btn-icon-right {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon-left svg,
+.btn-icon-right svg {
+  width: 1em;
+  height: 1em;
+}
+
+/* ==========================================
+   LOADING STATE
+   ========================================== */
+
+.btn-loading .btn-text {
+  opacity: 0.7;
+}
+
+.btn-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-spinner svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+/* ==========================================
+   BUTTON GROUP
+   ========================================== */
+
+.btn-group {
+  display: inline-flex;
+  gap: 0;
+}
+
+.btn-group .btn {
+  border-radius: 0;
+}
+
+.btn-group .btn:first-child {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.btn-group .btn:last-child {
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.btn-group .btn:not(:last-child) {
+  border-right-width: 1px;
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 480px) {
+  .btn {
+    padding: var(--space-md) var(--space-lg);
+  }
+  
+  .btn-lg {
+    padding: var(--space-md) var(--space-xl);
+    font-size: var(--font-size-base);
+  }
+  
+  .btn-xl {
+    padding: var(--space-lg) var(--space-2xl);
+  }
+}

@@ -1,0 +1,139 @@
+/* ==========================================
+   GLOBAL DESIGN SYSTEM - ZELORA ECOMMERCE
+   Premium Fashion Brand - Elegant & Organic
+   ========================================== */
+
+:root {
+  /* Color Palette - Dark Premium Theme */
+  --color-bg-main: #0d1117;
+  --color-bg-secondary: #161b22;
+  --color-bg-card: #1c2128;
+  --color-bg-elevated: #21262d;
+  --color-bg-hover: #30363d;
+  
+  /* Accent Colors - Elegant Teal/Green for Organic Feel */
+  --color-primary: #2d9d78;
+  --color-primary-light: #3eb489;
+  --color-primary-dark: #238c6a;
+  --color-secondary: #58a6ff;
+  --color-secondary-dark: #388bfd;
+  --color-accent-gold: #d4a574;
+  --color-accent-rose: #c77dbb;
+  
+  /* Text Colors */
+  --color-text-main: #f0f6fc;
+  --color-text-secondary: #c9d1d9;
+  --color-text-muted: #8b949e;
+  --color-text-placeholder: #6e7681;
+  
+  /* Border & Dividers - Enhanced */
+  --color-border: #30363d;
+  --color-border-light: #21262d;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-accent: rgba(255, 255, 255, 0.12);
+  --color-divider: #21262d;
+  --color-divider-gradient: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  
+  /* Status Colors */
+  --color-success: #3fb950;
+  --color-success-bg: rgba(63, 185, 80, 0.1);
+  --color-danger: #f85149;
+  --color-danger-bg: rgba(248, 81, 73, 0.1);
+  --color-warning: #d29922;
+  --color-warning-bg: rgba(210, 153, 34, 0.1);
+  --color-info: #58a6ff;
+  --color-info-bg: rgba(88, 166, 255, 0.1);
+  
+  /* Shadows - Enhanced for depth */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 20px rgba(45, 157, 120, 0.3);
+  --shadow-glow-lg: 0 0 40px rgba(45, 157, 120, 0.25);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(45, 157, 120, 0.2);
+  --shadow-inner: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-image: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  
+  /* Spacing System - Enhanced for better breathing room */
+  --space-2xs: 2px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 14px;
+  --space-lg: 20px;
+  --space-xl: 28px;
+  --space-2xl: 40px;
+  --space-3xl: 56px;
+  --space-4xl: 72px;
+  --space-5xl: 104px;
+  
+  /* Border Radius - Consistent scale */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+  
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  --font-family-display: 'Playfair Display', Georgia, serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+  --font-size-4xl: 36px;
+  --font-size-5xl: 48px;
+  --font-size-6xl: 60px;
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  
+  --line-height-tight: 1.2;
+  --line-height-snug: 1.35;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.02em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-caps: 0.08em;
+  
+  /* Transitions - Smoother */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* Container Widths - Wider for full-screen feel */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1400px;
+  --container-2xl: 1800px;
+  --container-full: 95%;
+  
+  /* Page Padding */
+  --page-padding-x: clamp(16px, 4vw, 48px);
+  --page-padding-y: clamp(24px, 5vh, 64px);
+  
+  /* Navbar Height */
+  --navbar-height: 70px;
+  
+  /* Grid Gaps */
+  --grid-gap-sm: 12px;
+  --grid-gap-md: 20px;
+  --grid-gap-lg: 28px;
+  --grid-gap-xl: 40px;
+}

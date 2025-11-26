@@ -1,5 +1,6 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
+import Footer from '../components/Footer/Footer';
 import './Layout.css';
 
 export default function Layout({ children }) {
@@ -11,9 +12,7 @@ export default function Layout({ children }) {
         {children}
       </main>
 
-      <footer className="footer">
-        <p>&copy; 2025 Zelora Pet Supplies. All rights reserved.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

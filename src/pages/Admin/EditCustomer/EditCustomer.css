@@ -1,0 +1,112 @@
+/* Edit Customer Admin Page - Dark Premium Theme */
+.edit-customer {
+  min-height: calc(100vh - var(--navbar-height));
+  padding: var(--space-2xl) var(--page-padding-x);
+  background: var(--color-bg-main);
+}
+
+.form-container {
+  max-width: 700px;
+  margin: 0 auto;
+  background: var(--color-bg-card);
+  padding: var(--space-2xl);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
+}
+
+.form-container h1 {
+  color: var(--color-text-main);
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--space-2xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
+  text-align: center;
+}
+
+.error-message {
+  background: rgba(248, 81, 73, 0.15);
+  color: var(--color-danger);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-xl);
+  border: 1px solid rgba(248, 81, 73, 0.3);
+}
+
+.form-group {
+  margin-bottom: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-sm);
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  color: var(--color-text-main);
+  background: var(--color-bg-elevated);
+  font-family: inherit;
+  transition: all var(--transition-fast);
+}
+
+.form-group input:hover,
+.form-group textarea:hover,
+.form-group select:hover {
+  border-color: var(--color-border-accent);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(45, 157, 120, 0.15);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+@media (max-width: 768px) {
+  .edit-customer {
+    padding: var(--space-lg);
+  }
+  
+  .form-container {
+    padding: var(--space-xl);
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: var(--space-lg);
+  margin-top: var(--space-2xl);
+}
+
+.form-actions button {
+  flex: 1;
+  padding: var(--space-lg);
+  font-weight: var(--font-weight-bold);
+}

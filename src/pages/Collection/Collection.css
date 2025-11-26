@@ -1,0 +1,344 @@
+/* ==========================================
+   COLLECTION PAGE - ZELORA PREMIUM FASHION
+   Gender-specific category browsing
+   ========================================== */
+
+.collection-page {
+  min-height: 100vh;
+  background: var(--color-bg-main);
+}
+
+/* Hero Section with Background Image */
+.collection-hero {
+  padding: var(--space-3xl) 0 var(--space-4xl);
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 300px;
+}
+
+.collection-page.womens .collection-hero {
+  border-bottom: 1px solid rgba(199, 125, 187, 0.2);
+}
+
+.collection-page.mens .collection-hero {
+  border-bottom: 1px solid rgba(45, 157, 120, 0.2);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  margin-bottom: var(--space-2xl);
+  transition: color var(--transition-fast);
+}
+
+.back-link svg {
+  width: 18px;
+  height: 18px;
+}
+
+.back-link:hover {
+  color: var(--color-primary);
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.collection-title {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-5xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.collection-page.womens .collection-title {
+  color: var(--color-accent-rose);
+}
+
+.collection-page.mens .collection-title {
+  color: var(--color-primary);
+}
+
+.collection-subtitle {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-secondary);
+  margin-bottom: 0;
+  text-align: center;
+}
+
+/* Categories Section */
+.categories-section {
+  padding: var(--space-4xl) 0;
+}
+
+.categories-section .section-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-main);
+  margin-bottom: var(--space-2xl);
+  text-align: center;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-xl);
+}
+
+/* Category Cards - Full Background Image Style */
+.category-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 320px;
+  padding: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  text-decoration: none;
+  transition: all var(--transition-base);
+  overflow: hidden;
+}
+
+.category-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-xl);
+}
+
+.collection-page.womens .category-card:hover {
+  border-color: var(--color-accent-rose);
+  box-shadow: 0 12px 32px rgba(199, 125, 187, 0.3);
+}
+
+/* Dark overlay for readability */
+.category-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(13, 17, 23, 0.95) 0%,
+    rgba(13, 17, 23, 0.7) 40%,
+    rgba(13, 17, 23, 0.4) 70%,
+    rgba(13, 17, 23, 0.2) 100%
+  );
+  z-index: 1;
+  transition: all var(--transition-base);
+}
+
+.category-card:hover .category-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(13, 17, 23, 0.9) 0%,
+    rgba(13, 17, 23, 0.6) 40%,
+    rgba(13, 17, 23, 0.3) 70%,
+    rgba(13, 17, 23, 0.1) 100%
+  );
+}
+
+.collection-page.womens .category-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(100, 50, 90, 0.9) 0%,
+    rgba(100, 50, 90, 0.6) 40%,
+    rgba(100, 50, 90, 0.3) 70%,
+    rgba(100, 50, 90, 0.1) 100%
+  );
+}
+
+.collection-page.womens .category-card:hover .category-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(156, 89, 146, 0.85) 0%,
+    rgba(156, 89, 146, 0.5) 40%,
+    rgba(156, 89, 146, 0.2) 70%,
+    rgba(156, 89, 146, 0.05) 100%
+  );
+}
+
+.category-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: var(--space-2xl);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.category-name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-main);
+  margin: 0;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.category-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--color-primary);
+  color: white;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-full);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all var(--transition-fast);
+}
+
+.category-cta svg {
+  width: 14px;
+  height: 14px;
+  transition: transform var(--transition-fast);
+}
+
+.category-card:hover .category-cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.category-card:hover .category-cta svg {
+  transform: translateX(4px);
+}
+
+.collection-page.womens .category-cta {
+  background: var(--color-accent-rose);
+}
+
+/* Quick Links Section */
+.quick-links-section {
+  padding: var(--space-3xl) 0 var(--space-5xl);
+  background: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-border);
+}
+
+.quick-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.quick-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-2xl);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.quick-link:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .collection-title {
+    font-size: var(--font-size-4xl);
+  }
+  
+  .collection-subtitle {
+    font-size: var(--font-size-lg);
+  }
+  
+  .categories-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-lg);
+  }
+  
+  .category-card {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .collection-hero {
+    padding: var(--space-2xl) 0 var(--space-3xl);
+  }
+  
+  .collection-title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .categories-section {
+    padding: var(--space-2xl) 0;
+  }
+  
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+  
+  .category-card {
+    min-height: 220px;
+  }
+  
+  .category-content {
+    padding: var(--space-lg);
+  }
+  
+  .category-name {
+    font-size: var(--font-size-base);
+  }
+  
+  .category-cta {
+    opacity: 1;
+    transform: translateY(0);
+    font-size: var(--font-size-xs);
+    padding: var(--space-xs) var(--space-md);
+  }
+  
+  .quick-links {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .quick-link {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm);
+  }
+  
+  .category-card {
+    min-height: 180px;
+  }
+  
+  .category-content {
+    padding: var(--space-md);
+  }
+}

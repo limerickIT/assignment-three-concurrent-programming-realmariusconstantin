@@ -1,24 +1,29 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
 
-import { AuthProvider } from './AuthContext';
+import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import Layout from './layout/Layout';
-import ProtectedRoute from './ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
-import Home from './pages/Home';
-import ProductDetails from './pages/ProductDetails';
-import CategoryProducts from './pages/CategoryProducts';
-import Wishlist from './pages/Wishlist';
-import Cart from './pages/Cart';
-import Login from './Login';
-import Signup from './Signup';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminProducts from './pages/admin/AdminProducts';
-import CreateProduct from './pages/admin/CreateProduct';
-import EditProduct from './pages/admin/EditProduct';
-import AdminCustomers from './pages/admin/AdminCustomers';
-import EditCustomer from './pages/admin/EditCustomer';
+import Home from './pages/Home/Home';
+import Products from './pages/Products/Products';
+import ProductDetails from './pages/ProductDetails/ProductDetails';
+import CategoryProducts from './pages/CategoryProducts/CategoryProducts';
+import Collection from './pages/Collection/Collection';
+import SearchResults from './pages/SearchResults/SearchResults';
+import Wishlist from './pages/Wishlist/Wishlist';
+import Cart from './pages/Cart/Cart';
+import Orders from './pages/Orders/Orders';
+import Login from './pages/Auth/Login/Login';
+import Signup from './pages/Auth/Register/Register';
+import AdminDashboard from './pages/Admin/AdminDashboard/AdminDashboard';
+import AdminProducts from './pages/Admin/AdminProducts/AdminProducts';
+import AdminCategories from './pages/Admin/AdminCategories/AdminCategories';
+import CreateProduct from './pages/Admin/CreateProduct/CreateProduct';
+import EditProduct from './pages/Admin/EditProduct/EditProduct';
+import AdminCustomers from './pages/Admin/AdminCustomers/AdminCustomers';
+import AdminOrders from './pages/Admin/AdminOrders/AdminOrders';
+import EditCustomer from './pages/Admin/EditCustomer/EditCustomer';
 
 function App() {
   return (
@@ -28,8 +33,14 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/products" element={<Products />} />
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/category/:categoryId" element={<CategoryProducts />} />
+              {/* Collection routes for gender-specific browsing */}
+              <Route path="/collection/:gender" element={<Collection />} />
+              <Route path="/collection/:gender/category/:categoryId" element={<CategoryProducts />} />
+              {/* Search results */}
+              <Route path="/search" element={<SearchResults />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/wishlist" element={
@@ -42,6 +53,11 @@ function App() {
                   <Cart />
                 </ProtectedRoute>
               } />
+              <Route path="/orders" element={
+                <ProtectedRoute>
+                  <Orders />
+                </ProtectedRoute>
+              } />
               <Route path="/admin" element={
                 <ProtectedRoute adminOnly={true}>
                   <AdminDashboard />
@@ -52,12 +68,17 @@ function App() {
                   <AdminProducts />
                 </ProtectedRoute>
               } />
-              <Route path="/admin/products/create" element={
+              <Route path="/admin/categories" element={
+                <ProtectedRoute adminOnly={true}>
+                  <AdminCategories />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/create-product" element={
                 <ProtectedRoute adminOnly={true}>
                   <CreateProduct />
                 </ProtectedRoute>
               } />
-              <Route path="/admin/products/edit/:id" element={
+              <Route path="/admin/edit-product/:id" element={
                 <ProtectedRoute adminOnly={true}>
                   <EditProduct />
                 </ProtectedRoute>
@@ -67,7 +88,12 @@ function App() {
                   <AdminCustomers />
                 </ProtectedRoute>
               } />
-              <Route path="/admin/customers/edit/:id" element={
+              <Route path="/admin/orders" element={
+                <ProtectedRoute adminOnly={true}>
+                  <AdminOrders />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/edit-customer/:id" element={
                 <ProtectedRoute adminOnly={true}>
                   <EditCustomer />
                 </ProtectedRoute>
