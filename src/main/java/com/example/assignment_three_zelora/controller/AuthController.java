@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -33,6 +35,43 @@ public class AuthController {
         
         if (response.getCustomerId() == null) {
             return ResponseEntity.badRequest().body(response);
+        }
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refreshToken(@RequestBody Map<String, String> request) {
+        String refreshToken = request.get("refreshToken");
+        
+        if (refreshToken == null || refreshToken.isEmpty()) {
+            return ResponseEntity.badRequest().body(
+                new AuthResponse(null, null, null, null, null, "Refresh token is required")
+            );
+        }
+
+        AuthResponse response = authService.refreshToken(refreshToken);
+        
+        if (response.getCustomerId() == null) {
+            return ResponseEntity.status(401).body(response);
+        }
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<AuthResponse> validateToken(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.badRequest().body(
+                new AuthResponse(null, null, null, null, null, "Invalid authorization header")
+            );
+        }
+
+        String token = authHeader.substring(7);
+        AuthResponse response = authService.validateToken(token);
+        
+        if (response.getCustomerId() == null) {
+            return ResponseEntity.status(401).body(response);
         }
         
         return ResponseEntity.ok(response);

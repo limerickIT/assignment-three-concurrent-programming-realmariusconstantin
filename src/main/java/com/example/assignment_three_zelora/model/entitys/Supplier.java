@@ -1,6 +1,7 @@
 package com.example.assignment_three_zelora.model.entitys;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.List;
@@ -39,9 +40,11 @@ public class Supplier implements Serializable {
     private String description;
     
     @OneToMany(mappedBy = "supplierId")
+    @JsonIgnore
     private List<Inventory> inventoryList;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplierId")
+    @JsonIgnore
     private List<Product> productList;
 
     public Supplier(Integer supplierId, String supplierName, String contactName, String contactEmail, String contactPhone, String address, String website, String description, List<Inventory> inventoryList, List<Product> productList) {

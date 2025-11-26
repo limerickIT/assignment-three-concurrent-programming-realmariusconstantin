@@ -1,7 +1,23 @@
 package com.example.assignment_three_zelora.model.repos;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import com.example.assignment_three_zelora.model.entitys.Inventory;
+import com.example.assignment_three_zelora.model.entitys.Product;
 
-public interface InventoryRepository extends JpaRepository<Inventory, Long> {
+import java.util.List;
+import java.util.Optional;
+
+public interface InventoryRepository extends JpaRepository<Inventory, Integer> {
+    
+    // Find inventory by product
+    Optional<Inventory> findByProductId(Product productId);
+    
+    // Find all low stock items (quantity <= reorder point)
+    @Query("SELECT i FROM Inventory i WHERE i.quantityInStock <= i.reorderPoint")
+    List<Inventory> findLowStockItems();
+    
+    // Find out of stock items
+    @Query("SELECT i FROM Inventory i WHERE i.quantityInStock <= 0")
+    List<Inventory> findOutOfStockItems();
 }

@@ -6,6 +6,8 @@ import com.example.assignment_three_zelora.model.entitys.Product;
 import com.example.assignment_three_zelora.model.repos.ProductRepository;
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("")
@@ -55,15 +57,42 @@ public class ProductController {
         productRepository.deleteById(id);
     }
     
-    // Search products by query
+    // Search products by query with fuzzy matching
     @GetMapping("/products/search")
     public List<Product> searchProducts(@RequestParam String query) {
-        return productRepository.searchByNameOrDescription(query);
+        // Direct search first
+        List<Product> results = productRepository.searchByNameOrDescription(query);
+        
+        // If no results, try searching each word individually for partial matching
+        if (results.isEmpty() && query.contains(" ")) {
+            String[] words = query.split("\\s+");
+            for (String word : words) {
+                if (word.length() >= 3) { // Only search words with 3+ characters
+                    List<Product> partialResults = productRepository.searchByNameOrDescription(word);
+                    results.addAll(partialResults);
+                }
+            }
+            // Remove duplicates
+            results = results.stream().distinct().collect(Collectors.toList());
+        }
+        
+        return results;
     }
 
     // Get products by category
     @GetMapping("/products/category/{categoryId}")
     public List<Product> getProductsByCategory(@PathVariable Integer categoryId) {
         return productRepository.findByCategory(categoryId);
+    }
+    
+    // Get random product suggestions
+    @GetMapping("/products/suggestions")
+    public List<Product> getProductSuggestions(@RequestParam(defaultValue = "8") int limit) {
+        try {
+            return productRepository.findRandomProducts(limit);
+        } catch (Exception e) {
+            // Fallback if RAND() not supported - get first N products
+            return productRepository.findAll().stream().limit(limit).collect(Collectors.toList());
+        }
     }
 }

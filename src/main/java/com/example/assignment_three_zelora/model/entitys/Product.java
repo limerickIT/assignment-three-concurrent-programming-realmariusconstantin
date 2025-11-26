@@ -74,7 +74,6 @@ public class Product implements Serializable {
    
     @JoinColumn(name = "supplier_Id", referencedColumnName = "supplier_id")
     @ManyToOne(optional = false)
-    @JsonIgnore
     private Supplier supplierId;
    
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")

@@ -22,14 +22,19 @@ public class Category implements Serializable {
     @Column(name = "category_image")
     private String categoryImage;
     
+    @Lob
+    @Column(name = "category_description")
+    private String categoryDescription;
+    
     @OneToMany(mappedBy = "categoryId")
     @JsonIgnore
     private List<Product> productList;
 
-    public Category(Integer categoryId, String categoryName, String categoryImage, List<Product> productList) {
+    public Category(Integer categoryId, String categoryName, String categoryImage, String categoryDescription, List<Product> productList) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.categoryImage = categoryImage;
+        this.categoryDescription = categoryDescription;
         this.productList = productList;
     }
 
@@ -47,6 +52,10 @@ public class Category implements Serializable {
     public String getCategoryImage() {
         return this.categoryImage;
     }
+    
+    public String getCategoryDescription() {
+        return this.categoryDescription;
+    }
 
     public List<Product> getProductList() {
         return this.productList;
@@ -63,12 +72,16 @@ public class Category implements Serializable {
     public void setCategoryImage(String categoryImage) {
         this.categoryImage = categoryImage;
     }
+    
+    public void setCategoryDescription(String categoryDescription) {
+        this.categoryDescription = categoryDescription;
+    }
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
     }
 
     public String toString() {
-        return "Category(categoryId=" + this.getCategoryId() + ", categoryName=" + this.getCategoryName() + ", categoryImage=" + this.getCategoryImage() + ")";
+        return "Category(categoryId=" + this.getCategoryId() + ", categoryName=" + this.getCategoryName() + ", categoryImage=" + this.getCategoryImage() + ", categoryDescription=" + this.getCategoryDescription() + ")";
     }
 }

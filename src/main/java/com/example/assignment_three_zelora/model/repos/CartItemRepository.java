@@ -2,9 +2,11 @@ package com.example.assignment_three_zelora.model.repos;
 
 import com.example.assignment_three_zelora.model.entitys.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +21,14 @@ public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
     Optional<CartItem> findByUserIdAndProductId(@Param("userId") Integer userId, @Param("productId") Integer productId);
     
     // Delete a specific item from user's cart
-    void deleteByCartItemIdAndUserId(Integer cartItemId, Integer userId);
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM CartItem c WHERE c.cartItemId = :cartItemId AND c.userId = :userId")
+    void deleteByCartItemIdAndUserId(@Param("cartItemId") Integer cartItemId, @Param("userId") Integer userId);
     
     // Clear entire cart for a user
-    void deleteByUserId(Integer userId);
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM CartItem c WHERE c.userId = :userId")
+    void deleteByUserId(@Param("userId") Integer userId);
 }
