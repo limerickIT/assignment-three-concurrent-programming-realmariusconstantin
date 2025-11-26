@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import productService from '../../services/productService';
 import ProductImage from '../../components/ProductImage/ProductImage';
 import { useCart } from '../../hooks/useCart';
@@ -28,9 +28,12 @@ const SORT_OPTIONS = [
 ];
 
 export default function CategoryProducts() {
-  const { categoryId, gender } = useParams();
-  const navigate = useNavigate();
+  const { categoryId, gender: genderParam } = useParams();
+  const [searchParams] = useSearchParams();
   const { addToCart } = useCart();
+  
+  // Get gender from route param OR query param
+  const gender = genderParam || searchParams.get('gender');
   
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState(null);
@@ -84,6 +87,10 @@ export default function CategoryProducts() {
   const filteredProducts = useMemo(() => {
     let result = [...products];
     
+    // Note: Gender-based filtering is handled by backend
+    // Products returned are already filtered to the category's gender
+    // No additional filtering needed here
+    
     // Apply price filter
     if (selectedPriceRange !== null) {
       const range = PRICE_RANGES[selectedPriceRange];
@@ -119,7 +126,7 @@ export default function CategoryProducts() {
     }
     
     return result;
-  }, [products, selectedPriceRange, selectedRating, sortBy]);
+  }, [products, selectedPriceRange, selectedRating, sortBy]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const clearFilters = () => {
     setSelectedPriceRange(null);
@@ -149,10 +156,14 @@ export default function CategoryProducts() {
   // Filter categories by gender if applicable
   const sidebarCategories = useMemo(() => {
     if (gender) {
-      return allCategories.filter(cat => 
-        cat.categoryName.toLowerCase().includes(gender.toLowerCase()) ||
-        cat.gender?.toLowerCase() === gender.toLowerCase()
-      );
+      // Define category IDs by gender (matching Collection.jsx)
+      const WOMENS_CATEGORY_IDS = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+      const MENS_CATEGORY_IDS = [1, 3, 4, 5, 6, 8, 9, 10];
+      
+      const genderLower = gender.toLowerCase();
+      const allowedIds = genderLower === 'women' ? WOMENS_CATEGORY_IDS : MENS_CATEGORY_IDS;
+      
+      return allCategories.filter(cat => allowedIds.includes(cat.categoryId));
     }
     return allCategories;
   }, [allCategories, gender]);

@@ -43,7 +43,7 @@ export default function AdminOrders() {
       setUpdatingStatus(orderId);
       await axiosClient.patch(`/orders/${orderId}/status`, { status: newStatus });
       setOrders(orders.map(order => 
-        order.orderId === orderId ? { ...order, status: newStatus } : order
+        order.orderId === orderId ? { ...order, orderStatus: newStatus } : order
       ));
     } catch (err) {
       console.error('Error updating order status:', err);
@@ -75,13 +75,14 @@ export default function AdminOrders() {
     }
   };
 
-  // Filter orders
+  // Filter orders - use orderStatus from backend
   const filteredOrders = Array.isArray(orders) ? orders.filter(order => {
-    const matchesStatus = !statusFilter || order.status === statusFilter;
+    const orderStatusValue = order.orderStatus || order.status;
+    const matchesStatus = !statusFilter || orderStatusValue === statusFilter;
     const matchesSearch = !searchTerm || 
       order.orderId?.toString().includes(searchTerm) ||
-      order.shippingName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (order.customerName || order.shippingName)?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (order.customerEmail || order.email)?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.shippingCity?.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesStatus && matchesSearch;
   }) : [];
@@ -226,12 +227,12 @@ export default function AdminOrders() {
                 <div className="order-header" onClick={() => toggleOrderExpand(order.orderId)}>
                   <div className="order-main-info">
                     <span className="order-id">#{order.orderId}</span>
-                    <span className={`status-badge ${getStatusColor(order.status)}`}>
-                      {order.status}
+                    <span className={`status-badge ${getStatusColor(order.orderStatus || order.status)}`}>
+                      {order.orderStatus || order.status || 'Pending'}
                     </span>
                   </div>
                   <div className="order-summary">
-                    <span className="customer-name">{order.shippingName || 'Unknown'}</span>
+                    <span className="customer-name">{order.customerName || order.shippingName || 'Unknown'}</span>
                     <span className="order-date">{formatDate(order.orderDate)}</span>
                     <span className="order-total">${(order.totalAmount || 0).toFixed(2)}</span>
                   </div>
@@ -245,42 +246,42 @@ export default function AdminOrders() {
                 {expandedOrderId === order.orderId && (
                   <div className="order-details">
                     <div className="details-grid">
-                      {/* Shipping Info */}
+                      {/* Customer Info */}
                       <div className="detail-section">
                         <h4>
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path>
                             <circle cx="12" cy="10" r="3"></circle>
                           </svg>
-                          Shipping Address
+                          Customer Info
                         </h4>
-                        <p>{order.shippingName}</p>
-                        <p>{order.shippingAddress}</p>
-                        <p>{order.shippingCity}, {order.shippingZip}</p>
-                        <p>{order.phone}</p>
-                        <p>{order.email}</p>
+                        <p><strong>Name:</strong> {order.customerName || order.shippingName || 'N/A'}</p>
+                        <p><strong>Email:</strong> {order.customerEmail || order.email || 'N/A'}</p>
+                        <p><strong>Shipping:</strong> {order.shippingMethod || 'Standard'}</p>
+                        <p><strong>Payment:</strong> {order.paymentMethod || 'N/A'}</p>
+                        {order.deliveryDate && <p><strong>Delivery:</strong> {formatDate(order.deliveryDate)}</p>}
                       </div>
 
-                      {/* Order Info */}
+                      {/* Order Summary */}
                       <div className="detail-section">
                         <h4>
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <circle cx="12" cy="12" r="3"></circle>
                             <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"></path>
                           </svg>
-                          Order Details
+                          Order Summary
                         </h4>
                         <div className="detail-row">
-                          <span>Payment:</span>
-                          <span>{order.paymentPreference || 'N/A'}</span>
+                          <span>Order ID:</span>
+                          <span>#{order.orderId}</span>
                         </div>
                         <div className="detail-row">
-                          <span>Size Pref:</span>
-                          <span>{order.sizePreference || 'N/A'}</span>
+                          <span>Customer ID:</span>
+                          <span>#{order.customerIdValue || order.customerId?.customerId || 'N/A'}</span>
                         </div>
                         <div className="detail-row">
-                          <span>Contact:</span>
-                          <span>{order.communicationPreference || 'N/A'}</span>
+                          <span>Total Amount:</span>
+                          <span>${(order.totalAmount || 0).toFixed(2)}</span>
                         </div>
                       </div>
 
@@ -296,7 +297,7 @@ export default function AdminOrders() {
                           Update Status
                         </h4>
                         <select
-                          value={order.status}
+                          value={order.orderStatus || order.status || 'Pending'}
                           onChange={(e) => handleStatusChange(order.orderId, e.target.value)}
                           disabled={updatingStatus === order.orderId}
                           className="status-select"
@@ -309,9 +310,9 @@ export default function AdminOrders() {
                     </div>
 
                     {/* Order Items */}
-                    {order.orderItems && order.orderItems.length > 0 && (
+                    {((order.orderitemList && order.orderitemList.length > 0) || (order.orderItems && order.orderItems.length > 0)) && (
                       <div className="order-items-section">
-                        <h4>Order Items ({order.orderItems.length})</h4>
+                        <h4>Order Items ({(order.orderitemList || order.orderItems).length})</h4>
                         <table className="order-items-table">
                           <thead>
                             <tr>
@@ -322,12 +323,12 @@ export default function AdminOrders() {
                             </tr>
                           </thead>
                           <tbody>
-                            {order.orderItems.map((item, idx) => (
+                            {(order.orderitemList || order.orderItems).map((item, idx) => (
                               <tr key={idx}>
-                                <td>{item.productName || `Product #${item.productId}`}</td>
+                                <td>{item.productName || `Product #${item.productIdValue || item.productId}`}</td>
                                 <td>{item.quantity}</td>
-                                <td>${(item.price || 0).toFixed(2)}</td>
-                                <td>${((item.price || 0) * item.quantity).toFixed(2)}</td>
+                                <td>${(item.itemPrice || item.price || 0).toFixed(2)}</td>
+                                <td>${(item.subtotal || ((item.itemPrice || item.price || 0) * item.quantity)).toFixed(2)}</td>
                               </tr>
                             ))}
                           </tbody>

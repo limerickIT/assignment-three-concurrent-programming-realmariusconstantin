@@ -7,6 +7,27 @@ import './Collection.css';
 import womensCollectionBg from '../../assets/images/womens_collection.jpg';
 import mensCollectionBg from '../../assets/images/mens_collection.jpg';
 
+// Import men's collection category images
+import mensClothingImg from '../../assets/images/collection/MensCollection/mensClothing.jpg';
+import mensTshirtImg from '../../assets/images/collection/MensCollection/tshirt.jpg';
+import mensJeansImg from '../../assets/images/collection/MensCollection/jeans.jpg';
+import mensJacketImg from '../../assets/images/collection/MensCollection/jacket.jpg';
+import mensShoesImg from '../../assets/images/collection/MensCollection/shoes.jpg';
+import mensSneakersImg from '../../assets/images/collection/MensCollection/sneakers.jpg';
+import mensAccessoriesImg from '../../assets/images/collection/MensCollection/accessories.jpg';
+import mensHatsImg from '../../assets/images/collection/MensCollection/hats.jpg';
+
+// Import women's collection category images
+import womensClothingImg from '../../assets/images/collection/womensColletion/womensClothing.jpg';
+import womensDressesImg from '../../assets/images/collection/womensColletion/Dresses.jpg';
+import womensTshirtsImg from '../../assets/images/collection/womensColletion/tshirts.jpg';
+import womensJeansImg from '../../assets/images/collection/womensColletion/jeans.jpg';
+import womensJacketsImg from '../../assets/images/collection/womensColletion/jackets.jpg';
+import womensShoesImg from '../../assets/images/collection/womensColletion/shoes.jpg';
+import womensSneakersImg from '../../assets/images/collection/womensColletion/sneakers.jpg';
+import womensAccessoriesImg from '../../assets/images/collection/womensColletion/accessories.jpg';
+import womensHatsImg from '../../assets/images/collection/womensColletion/hats.jpg';
+
 // Define category IDs by gender (based on actual SQL database)
 // Categories from zelora.sql:
 // 1: Men's Clothing (men only)
@@ -117,25 +138,55 @@ const Collection = () => {
   // SQL categories: 1=Men's Clothing, 2=Women's Clothing, 3=Shoes, 4=Accessories, 
   // 5=T-Shirts, 6=Jeans, 7=Dresses, 8=Jackets, 9=Sneakers, 10=Hats
   const predefinedCategories = isWomens ? [
-    { id: 2, name: "Women's Clothing", iconType: 'dress' },
-    { id: 7, name: 'Dresses', iconType: 'dress' },
-    { id: 5, name: 'T-Shirts', iconType: 'tshirt' },
-    { id: 6, name: 'Jeans', iconType: 'jeans' },
-    { id: 8, name: 'Jackets', iconType: 'jacket' },
-    { id: 3, name: 'Shoes', iconType: 'heels' },
-    { id: 9, name: 'Sneakers', iconType: 'sneakers' },
-    { id: 4, name: 'Accessories', iconType: 'bag' },
-    { id: 10, name: 'Hats', iconType: 'watch' },
+    { id: 2, name: "Women's Clothing", image: womensClothingImg },
+    { id: 7, name: 'Dresses', image: womensDressesImg },
+    { id: 5, name: 'T-Shirts', image: womensTshirtsImg },
+    { id: 6, name: 'Jeans', image: womensJeansImg },
+    { id: 8, name: 'Jackets', image: womensJacketsImg },
+    { id: 3, name: 'Shoes', image: womensShoesImg },
+    { id: 9, name: 'Sneakers', image: womensSneakersImg },
+    { id: 4, name: 'Accessories', image: womensAccessoriesImg },
+    { id: 10, name: 'Hats', image: womensHatsImg },
   ] : [
-    { id: 1, name: "Men's Clothing", iconType: 'shirt' },
-    { id: 5, name: 'T-Shirts', iconType: 'tshirt' },
-    { id: 6, name: 'Jeans', iconType: 'jeans' },
-    { id: 8, name: 'Jackets', iconType: 'jacket' },
-    { id: 3, name: 'Shoes', iconType: 'sneakers' },
-    { id: 9, name: 'Sneakers', iconType: 'sneakers' },
-    { id: 4, name: 'Accessories', iconType: 'watch' },
-    { id: 10, name: 'Hats', iconType: 'watch' },
+    { id: 1, name: "Men's Clothing", image: mensClothingImg },
+    { id: 5, name: 'T-Shirts', image: mensTshirtImg },
+    { id: 6, name: 'Jeans', image: mensJeansImg },
+    { id: 8, name: 'Jackets', image: mensJacketImg },
+    { id: 3, name: 'Shoes', image: mensShoesImg },
+    { id: 9, name: 'Sneakers', image: mensSneakersImg },
+    { id: 4, name: 'Accessories', image: mensAccessoriesImg },
+    { id: 10, name: 'Hats', image: mensHatsImg },
   ];
+
+  // Map category ID to image for API-fetched categories
+  const getCategoryImage = (categoryId) => {
+    if (isWomens) {
+      const imageMap = {
+        2: womensClothingImg,
+        3: womensShoesImg,
+        4: womensAccessoriesImg,
+        5: womensTshirtsImg,
+        6: womensJeansImg,
+        7: womensDressesImg,
+        8: womensJacketsImg,
+        9: womensSneakersImg,
+        10: womensHatsImg,
+      };
+      return imageMap[categoryId] || womensClothingImg;
+    } else {
+      const imageMap = {
+        1: mensClothingImg,
+        3: mensShoesImg,
+        4: mensAccessoriesImg,
+        5: mensTshirtImg,
+        6: mensJeansImg,
+        8: mensJacketImg,
+        9: mensSneakersImg,
+        10: mensHatsImg,
+      };
+      return imageMap[categoryId] || mensClothingImg;
+    }
+  };
 
   return (
     <div className={`collection-page ${isWomens ? 'womens' : 'mens'}`}>
@@ -180,19 +231,18 @@ const Collection = () => {
             </div>
           ) : (
             <div className="categories-grid">
-              {/* Use API categories if available, otherwise predefined */}
-              {(categories.length > 0 ? categories : predefinedCategories).map((category, index) => {
-                const categoryId = category.categoryId || category.id;
-                const categoryName = category.categoryName || category.name;
-                // Use thumbs folder images - pattern: /thumbs/{categoryId}/{categoryId}_1.png
-                const thumbUrl = `http://localhost:8080/images/thumbs/${categoryId}/${categoryId}_1.png`;
+              {/* Use predefined categories with proper images */}
+              {predefinedCategories.map((category) => {
+                const categoryId = category.id;
+                const categoryName = category.name;
+                const categoryImage = category.image;
                 
                 return (
                   <Link 
-                    key={categoryId || index}
+                    key={categoryId}
                     to={`/category/${categoryId}?gender=${gender}`}
                     className="category-card"
-                    style={{ backgroundImage: `url(${thumbUrl})` }}
+                    style={{ backgroundImage: `url(${categoryImage})` }}
                   >
                     <div className="category-overlay"></div>
                     <div className="category-content">

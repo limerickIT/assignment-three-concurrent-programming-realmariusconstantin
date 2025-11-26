@@ -271,7 +271,7 @@
 }
 
 /* Primary Button */
-.admin-products .btn.btn-primary {
+.admin-products .btn-primary {
   background: var(--gradient-primary);
   color: white;
   border: none;
@@ -284,16 +284,17 @@
   gap: var(--space-sm);
   transition: all var(--transition-fast);
   text-decoration: none;
+  font-size: 0.95rem;
 }
 
-.admin-products .btn.btn-primary svg {
+.admin-products .btn-primary svg {
   width: 18px;
   height: 18px;
 }
 
-.admin-products .btn.btn-primary:hover {
+.admin-products .btn-primary:hover {
   box-shadow: var(--shadow-glow);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 /* Pagination */

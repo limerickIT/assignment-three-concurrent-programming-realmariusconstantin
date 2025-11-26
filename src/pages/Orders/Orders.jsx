@@ -167,8 +167,8 @@ export default function Orders() {
                     </div>
                   </div>
                   <div className="order-summary">
-                    <span className={`order-status ${getStatusColor(order.status)}`}>
-                      {order.status || 'Pending'}
+                    <span className={`order-status ${getStatusColor(order.orderStatus || order.status)}`}>
+                      {order.orderStatus || order.status || 'Pending'}
                     </span>
                     <span className="order-total">${parseFloat(order.totalAmount || 0).toFixed(2)}</span>
                   </div>
@@ -185,15 +185,15 @@ export default function Orders() {
                     <div className="details-section">
                       <h4>Order Items</h4>
                       <div className="order-items">
-                        {order.orderItems?.map((item, idx) => (
+                        {order.orderitemList?.length > 0 ? order.orderitemList.map((item, idx) => (
                           <div key={idx} className="order-item">
                             <div className="item-info">
                               <span className="item-name">{item.productName || `Product #${item.productId}`}</span>
                               <span className="item-qty">Qty: {item.quantity}</span>
                             </div>
-                            <span className="item-price">${parseFloat(item.price || 0).toFixed(2)}</span>
+                            <span className="item-price">${parseFloat(item.itemPrice || item.subtotal || 0).toFixed(2)}</span>
                           </div>
-                        )) || (
+                        )) : (
                           <p className="no-items">Order items not available</p>
                         )}
                       </div>
@@ -203,21 +203,10 @@ export default function Orders() {
                     <div className="details-section">
                       <h4>Shipping Information</h4>
                       <div className="shipping-info">
-                        <p><strong>Name:</strong> {order.shippingName || user?.firstName + ' ' + user?.lastName}</p>
-                        <p><strong>Address:</strong> {order.shippingAddress || 'Not specified'}</p>
-                        <p><strong>City:</strong> {order.shippingCity || 'Not specified'}</p>
-                        <p><strong>ZIP:</strong> {order.shippingZip || 'Not specified'}</p>
-                        <p><strong>Phone:</strong> {order.phone || 'Not specified'}</p>
-                      </div>
-                    </div>
-
-                    {/* Preferences */}
-                    <div className="details-section">
-                      <h4>Order Preferences</h4>
-                      <div className="preferences-info">
-                        <p><strong>Payment:</strong> {order.paymentPreference || 'Not specified'}</p>
-                        <p><strong>Size:</strong> {order.sizePreference || 'Not specified'}</p>
-                        <p><strong>Communication:</strong> {order.communicationPreference || 'Email'}</p>
+                        <p><strong>Name:</strong> {order.customerName || user?.firstName + ' ' + user?.lastName}</p>
+                        <p><strong>Email:</strong> {order.customerEmail || user?.email || 'Not specified'}</p>
+                        <p><strong>Payment Method:</strong> {order.paymentMethod || 'Not specified'}</p>
+                        <p><strong>Shipping Method:</strong> {order.shippingMethod || 'Standard'}</p>
                       </div>
                     </div>
 
@@ -225,15 +214,11 @@ export default function Orders() {
                     <div className="details-section totals-section">
                       <div className="total-row">
                         <span>Subtotal</span>
-                        <span>${parseFloat(order.subtotal || order.totalAmount || 0).toFixed(2)}</span>
-                      </div>
-                      <div className="total-row">
-                        <span>Tax</span>
-                        <span>${parseFloat(order.tax || 0).toFixed(2)}</span>
+                        <span>${parseFloat(order.totalAmount || 0).toFixed(2)}</span>
                       </div>
                       <div className="total-row">
                         <span>Shipping</span>
-                        <span>{order.shippingCost ? `$${order.shippingCost}` : 'Free'}</span>
+                        <span>Free</span>
                       </div>
                       <div className="total-row grand-total">
                         <span>Total</span>
