@@ -1,6 +1,8 @@
 package com.example.assignment_three_zelora.model.entitys;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -38,12 +40,39 @@ public class Orders implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date deliveryDate;
     
-    @OneToMany(mappedBy = "orderId")
+    @OneToMany(mappedBy = "orderId", fetch = FetchType.EAGER)
     private List<Orderitem> orderitemList;
     
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     @ManyToOne
+    @JsonIgnore
     private Customer customerId;
+    
+    // Transient field to expose customer ID without full object
+    @Transient
+    @JsonProperty("customerId")
+    public Integer getCustomerIdValue() {
+        return customerId != null ? customerId.getCustomerId() : null;
+    }
+    
+    // Transient field for customer name
+    @Transient
+    @JsonProperty("customerName")
+    public String getCustomerName() {
+        if (customerId != null) {
+            return (customerId.getFirstName() != null ? customerId.getFirstName() : "") + 
+                   " " + 
+                   (customerId.getLastName() != null ? customerId.getLastName() : "");
+        }
+        return null;
+    }
+    
+    // Transient field for customer email
+    @Transient
+    @JsonProperty("customerEmail")
+    public String getCustomerEmail() {
+        return customerId != null ? customerId.getEmail() : null;
+    }
 
     public Orders(Integer orderId, Date orderDate, BigDecimal totalAmount, String orderStatus, String paymentMethod, String shippingMethod, Date deliveryDate, List<Orderitem> orderitemList, Customer customerId) {
         this.orderId = orderId;

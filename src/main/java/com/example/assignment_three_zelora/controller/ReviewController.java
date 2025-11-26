@@ -66,7 +66,7 @@ public class ReviewController {
     
     // Get reviews by customer
     @GetMapping("/reviews/customer/{customerId}")
-    public ResponseEntity<List<ReviewDto>> getReviewsByCustomer(@PathVariable Long customerId) {
+    public ResponseEntity<List<ReviewDto>> getReviewsByCustomer(@PathVariable Integer customerId) {
         Optional<Customer> customer = customerRepository.findById(customerId);
         if (customer.isPresent()) {
             List<Review> reviews = reviewRepository.findByCustomerId(customer.get());
@@ -107,7 +107,7 @@ public class ReviewController {
     public ResponseEntity<?> createReview(@RequestBody Map<String, Object> data) {
         try {
             Integer productId = ((Number) data.get("productId")).intValue();
-            Long customerId = ((Number) data.get("customerId")).longValue();
+            Integer customerId = ((Number) data.get("customerId")).intValue();
             Integer rating = ((Number) data.get("rating")).intValue();
             String reviewText = (String) data.get("reviewText");
             

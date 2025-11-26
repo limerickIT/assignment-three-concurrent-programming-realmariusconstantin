@@ -41,7 +41,7 @@ public class WishlistController {
     
     // Get wishlist items for a customer (returns DTOs)
     @GetMapping("/wishlist/customer/{customerId}")
-    public ResponseEntity<List<WishlistItemDto>> getWishlistByCustomer(@PathVariable Long customerId) {
+    public ResponseEntity<List<WishlistItemDto>> getWishlistByCustomer(@PathVariable Integer customerId) {
         Optional<Customer> customer = customerRepository.findById(customerId);
         if (customer.isPresent()) {
             List<Wishlist> items = wishlistRepository.findByCustomerId(customer.get());
@@ -56,7 +56,7 @@ public class WishlistController {
     // Check if product is in customer's wishlist
     @GetMapping("/wishlist/check")
     public ResponseEntity<?> checkWishlistItem(
-            @RequestParam Long customerId,
+            @RequestParam Integer customerId,
             @RequestParam Integer productId) {
         Optional<Customer> customer = customerRepository.findById(customerId);
         Optional<Product> product = productRepository.findById(productId);
@@ -72,7 +72,7 @@ public class WishlistController {
     @PostMapping("/wishlist")
     public ResponseEntity<?> addToWishlist(@RequestBody Map<String, Object> data) {
         try {
-            Long customerId = ((Number) data.get("customerId")).longValue();
+            Integer customerId = ((Number) data.get("customerId")).intValue();
             Integer productId = ((Number) data.get("productId")).intValue();
             
             Optional<Customer> customer = customerRepository.findById(customerId);
@@ -128,7 +128,7 @@ public class WishlistController {
     // Remove item from wishlist by customer and product
     @DeleteMapping("/wishlist/customer/{customerId}/product/{productId}")
     public ResponseEntity<?> removeFromWishlistByProduct(
-            @PathVariable Long customerId,
+            @PathVariable Integer customerId,
             @PathVariable Integer productId) {
         try {
             Optional<Customer> customer = customerRepository.findById(customerId);

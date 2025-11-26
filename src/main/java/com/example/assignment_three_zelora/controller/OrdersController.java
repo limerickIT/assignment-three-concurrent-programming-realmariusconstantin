@@ -51,7 +51,7 @@ public class OrdersController {
     
     // Get orders by customer ID
     @GetMapping("/orders/customer/{customerId}")
-    public ResponseEntity<List<Orders>> getOrdersByCustomer(@PathVariable Long customerId) {
+    public ResponseEntity<List<Orders>> getOrdersByCustomer(@PathVariable Integer customerId) {
         Optional<Customer> customer = customerRepository.findById(customerId);
         if (customer.isPresent()) {
             List<Orders> orders = ordersRepository.findByCustomerId(customer.get());
@@ -70,7 +70,7 @@ public class OrdersController {
                 return ResponseEntity.badRequest().body(Map.of("error", "Customer ID is required"));
             }
             
-            Optional<Customer> customer = customerRepository.findById(customerId.longValue());
+            Optional<Customer> customer = customerRepository.findById(customerId);
             if (!customer.isPresent()) {
                 return ResponseEntity.badRequest().body(Map.of("error", "Customer not found"));
             }
@@ -170,6 +170,9 @@ public class OrdersController {
             if (updates.containsKey("orderStatus")) {
                 order.setOrderStatus((String) updates.get("orderStatus"));
             }
+            if (updates.containsKey("status")) {
+                order.setOrderStatus((String) updates.get("status"));
+            }
             if (updates.containsKey("paymentMethod")) {
                 order.setPaymentMethod((String) updates.get("paymentMethod"));
             }
@@ -182,6 +185,27 @@ public class OrdersController {
             
             Orders savedOrder = ordersRepository.save(order);
             return ResponseEntity.ok(savedOrder);
+        }
+        return ResponseEntity.notFound().build();
+    }
+    
+    // Update order status (PATCH)
+    @PatchMapping("/orders/{id}/status")
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Integer id, @RequestBody Map<String, Object> updates) {
+        Optional<Orders> orderOpt = ordersRepository.findById(id);
+        if (orderOpt.isPresent()) {
+            Orders order = orderOpt.get();
+            String newStatus = (String) updates.get("status");
+            if (newStatus != null) {
+                order.setOrderStatus(newStatus);
+                Orders savedOrder = ordersRepository.save(order);
+                return ResponseEntity.ok(Map.of(
+                    "orderId", savedOrder.getOrderId(),
+                    "status", savedOrder.getOrderStatus(),
+                    "message", "Status updated successfully"
+                ));
+            }
+            return ResponseEntity.badRequest().body(Map.of("error", "Status is required"));
         }
         return ResponseEntity.notFound().build();
     }

@@ -1,6 +1,8 @@
 package com.example.assignment_three_zelora.model.entitys;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -33,11 +35,32 @@ public class Orderitem implements Serializable {
    
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     @ManyToOne
+    @JsonIgnore
     private Orders orderId;
     
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     @ManyToOne
+    @JsonIgnore
     private Product productId;
+    
+    // Expose product info without circular reference
+    @Transient
+    @JsonProperty("productId")
+    public Integer getProductIdValue() {
+        return productId != null ? productId.getProductId() : null;
+    }
+    
+    @Transient
+    @JsonProperty("productName")
+    public String getProductName() {
+        return productId != null ? productId.getProductName() : null;
+    }
+    
+    @Transient
+    @JsonProperty("productImage")
+    public String getProductImage() {
+        return productId != null ? productId.getFeatureImage() : null;
+    }
 
 
     public Orderitem(Integer orderItemId, Integer quantity, BigDecimal itemPrice, BigDecimal subtotal, BigDecimal itemWeight, String customisationOptions, Orders orderId, Product productId) {
