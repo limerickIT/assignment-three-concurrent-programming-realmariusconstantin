@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class ImageUploadController {
     
     @Value("${app.upload.dir:src/main/resources/static/images/products}")

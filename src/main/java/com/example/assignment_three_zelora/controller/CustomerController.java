@@ -23,13 +23,13 @@ public class CustomerController {
     
     // Get customer by ID
     @GetMapping("/customers/{id}")
-    public Optional<Customer> getCustomerById(@PathVariable Long id) {
+    public Optional<Customer> getCustomerById(@PathVariable Integer id) {
         return customerRepository.findById(id);
     }
     
     // Update customer
     @PutMapping("/customers/{id}")
-    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer customerDetails) {
+    public Customer updateCustomer(@PathVariable Integer id, @RequestBody Customer customerDetails) {
         Optional<Customer> customer = customerRepository.findById(id);
         if (customer.isPresent()) {
             Customer c = customer.get();
@@ -49,7 +49,7 @@ public class CustomerController {
     
     // Delete customer
     @DeleteMapping("/customers/{id}")
-    public void deleteCustomer(@PathVariable Long id) {
+    public void deleteCustomer(@PathVariable Integer id) {
         customerRepository.deleteById(id);
     }
 }
