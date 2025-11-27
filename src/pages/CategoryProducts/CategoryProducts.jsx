@@ -273,8 +273,7 @@ export default function CategoryProducts() {
                     </Link>
 
                     <div className="product-rating">
-                      {renderStars(4)}
-                      <span className="rating-text">(128)</span>
+                      {renderStars(Math.round(product.averageRating || 4))}
                     </div>
 
                     <p className="product-desc">

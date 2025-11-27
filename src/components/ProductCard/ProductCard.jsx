@@ -149,8 +149,7 @@ const ProductCard = ({ product, onWishlistToggle, isInWishlist }) => {
           <h3 className="product-name">{product.productName}</h3>
           
           <div className="product-rating">
-            {renderStars(4)}
-            <span className="rating-count">(128)</span>
+            {renderStars(Math.round(product.averageRating || 4))}
           </div>
 
           {/* Stock Indicator */}

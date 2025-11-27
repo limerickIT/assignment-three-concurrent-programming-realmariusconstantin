@@ -1,7 +1,7 @@
 import axiosClient from '../api/axiosClient';
 
 const productService = {
-  // Get all products
+  // Get all products (with review counts and ratings for product cards)
   getAllProducts: () => axiosClient.get('/products'),
   
   // Search products by query
