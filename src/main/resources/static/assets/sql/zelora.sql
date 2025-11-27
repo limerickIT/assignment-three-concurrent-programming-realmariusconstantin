@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2025 at 08:48 PM
+-- Generation Time: Nov 27, 2025 at 11:48 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,6 +35,13 @@ CREATE TABLE `cart_items` (
   `price` decimal(38,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `cart_items`
+--
+
+INSERT INTO `cart_items` (`cart_item_id`, `user_id`, `product_id`, `quantity`, `price`) VALUES
+(21, 153, 39, 1, 29.99);
+
 -- --------------------------------------------------------
 
 --
@@ -44,24 +51,25 @@ CREATE TABLE `cart_items` (
 CREATE TABLE `categories` (
   `category_id` int(11) NOT NULL,
   `category_name` varchar(255) DEFAULT NULL,
-  `category_image` varchar(255) DEFAULT NULL
+  `category_image` varchar(255) DEFAULT NULL,
+  `category_description` tinytext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`category_id`, `category_name`, `category_image`) VALUES
-(1, 'Men\'s Clothing', 'no-image.jpg'),
-(2, 'Women\'s Clothing', 'no-image.jpg'),
-(3, 'Shoes', 'no-image.jpg'),
-(4, 'Accessories', 'no-image.jpg'),
-(5, 'T-Shirts', 'no-image.jpg'),
-(6, 'Jeans', 'no-image.jpg'),
-(7, 'Dresses', 'no-image.jpg'),
-(8, 'Jackets', 'no-image.jpg'),
-(9, 'Sneakers', 'no-image.jpg'),
-(10, 'Hats', 'no-image.jpg');
+INSERT INTO `categories` (`category_id`, `category_name`, `category_image`, `category_description`) VALUES
+(1, 'Men\'s Clothing', 'no-image.jpg', NULL),
+(2, 'Women\'s Clothing', 'no-image.jpg', NULL),
+(3, 'Shoes', 'no-image.jpg', NULL),
+(4, 'Accessories', 'no-image.jpg', NULL),
+(5, 'T-Shirts', 'no-image.jpg', NULL),
+(6, 'Jeans', 'no-image.jpg', NULL),
+(7, 'Dresses', 'no-image.jpg', NULL),
+(8, 'Jackets', 'no-image.jpg', NULL),
+(9, 'Sneakers', 'no-image.jpg', NULL),
+(10, 'Hats', 'no-image.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -244,7 +252,9 @@ INSERT INTO `customers` (`customer_id`, `first_name`, `last_name`, `email`, `pas
 (150, 'Natalia', 'Kowalczyk', 'natalia.kowalczyk@qub.co.uk', 'w&z0kV-dY', '2727 Cedar Road', '+44 28 2727 2828', '1989-07-26', 'Credit Card', 'Medium', 'Bronze', 'SMS', '2022-12-24', 'Belfast', 'USER'),
 (151, 'Ciarán', 'Ó Néill', 'coneill88@gmail.com', 'c*rH0VU', '2828 Elm Road', '+353 1 2828 2929', '1988-06-05', 'Credit Card', 'Medium', 'Silver', 'Email', '2022-11-12', 'Dublin', 'USER'),
 (152, 'Svitlana', 'Ivanenko', 'sviivan@gmail.com', 'fLh!$(J6', '2929 Oak Lane', '+353 21 2929 3030', '1985-02-20', 'Debit Card', 'Large', 'Gold', 'SMS', '2023-08-01', 'Cork', 'USER'),
-(153, 'marius', 'constantin', 'marius.c49@yahoo.com', '$2a$10$dBB8JnyxvvVL5SRbNZnGOOJE70ZbT.OxZS2Qd/BjSVhjsohXvcXD6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-11-20', NULL, 'USER');
+(153, 'marius', 'constantin', 'marius.c49@yahoo.com', '$2a$10$dBB8JnyxvvVL5SRbNZnGOOJE70ZbT.OxZS2Qd/BjSVhjsohXvcXD6', '6 dromin court', NULL, NULL, NULL, NULL, NULL, NULL, '2025-11-20', 'nenagh', 'ADMIN'),
+(154, 'lucy', 'ryan', 'jimmy2shoes@gmail.com', '$2a$10$f.bPDhhvQpVzm1E13UrXh.8jkpDeEgQ2dIUG0heJ.Dz/emHC/ddHe', '6 dromin court', NULL, NULL, NULL, NULL, NULL, NULL, '2025-11-25', 'nenagh', 'USER'),
+(155, 'lee', 'james', 'lee@gmail.com', '$2a$10$XIvh1ZvT/Fv5FQA2ITGNMuoNEyjB/thgj8ELbBGfyEtu5qj4fsQBe', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-11-27', NULL, 'USER');
 
 -- --------------------------------------------------------
 
@@ -576,7 +586,14 @@ INSERT INTO `orderitems` (`order_item_id`, `order_id`, `product_id`, `quantity`,
 (180, 164, 8, 2, 119.98, 239.96, 2.20, 'Size: S'),
 (181, 165, 7, 1, 59.99, 59.99, 1.50, 'Color: White, Size: M'),
 (182, 166, 6, 2, 89.98, 179.96, 2.00, 'Size: S'),
-(183, 167, 1, 1, 29.99, 29.99, 1.00, 'Color: Blue, Size: L');
+(183, 167, 1, 1, 29.99, 29.99, 1.00, 'Color: Blue, Size: L'),
+(184, 168, NULL, 1, 28.99, 28.99, NULL, NULL),
+(185, 169, NULL, 1, 19.99, 19.99, NULL, NULL),
+(186, 170, NULL, 1, 28.99, 28.99, NULL, NULL),
+(187, 171, NULL, 1, 28.99, 28.99, NULL, NULL),
+(188, 172, NULL, 1, 28.99, 28.99, NULL, NULL),
+(189, 173, NULL, 1, 59.99, 59.99, NULL, NULL),
+(190, 174, NULL, 1, 28.99, 28.99, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -766,7 +783,14 @@ INSERT INTO `orders` (`order_id`, `customer_id`, `order_date`, `total_amount`, `
 (164, 75, '2023-12-14', 89.99, 'Shipped', 'Credit Card', 'Standard Shipping', '2023-12-19'),
 (165, 150, '2023-12-15', 29.99, 'Delivered', 'PayPal', 'Express Shipping', '2023-12-16'),
 (166, 139, '2023-12-16', 64.99, 'Processing', 'Credit Card', 'Standard Shipping', NULL),
-(167, 58, '2023-12-17', 139.99, 'Shipped', 'Credit Card', 'Standard Shipping', '2023-12-20');
+(167, 58, '2023-12-17', 139.99, 'Shipped', 'Credit Card', 'Standard Shipping', '2023-12-20'),
+(168, 153, '2025-11-25', 28.99, 'Pending', 'card', 'Standard', NULL),
+(169, 154, '2025-11-25', 19.99, 'Pending', 'card', 'Standard', NULL),
+(170, 153, '2025-11-26', 28.99, 'Pending', 'card', 'Standard', NULL),
+(171, 153, '2025-11-26', 28.99, 'Processing', 'card', 'Standard', NULL),
+(172, 153, '2025-11-26', 28.99, 'Pending', 'revolut', 'Standard', NULL),
+(173, 153, '2025-11-26', 59.99, 'Pending', 'apple', 'Standard', NULL),
+(174, 153, '2025-11-26', 28.99, 'Pending', 'card', 'Standard', NULL);
 
 -- --------------------------------------------------------
 
@@ -815,11 +839,11 @@ INSERT INTO `products` (`product_id`, `product_name`, `description`, `category_i
 (17, 'Recycled Men\'s Hoodie', 'Stylish hoodie for men made from recycled materials.', 1, 59.99, 'M', 'Gray', 'Recycled Fabric', 5, 'GreenFashion', '2023-03-08', 54.99, '17_1.png', 11),
 (18, 'Organic Cotton Women\'s Sweater', 'A cozy and eco-friendly sweater for women made from organic cotton.', 2, 54.99, 'L', 'Blue', 'Organic Cotton', 4, 'EcoWear', '2023-02-28', 49.99, '18_1.png', 11),
 (19, 'Bamboo Fiber Men\'s Shorts', 'Comfortable and eco-friendly shorts for men made from bamboo fiber.', 1, 34.99, 'S', 'Black', 'Bamboo Fiber', 5, 'EcoStyle', '2023-03-12', 29.99, 'no-image.png', 2),
-(20, 'Recycled Women\'s Sweater', 'Stylish sweater for women made from recycled materials.', 2, 54.99, 'M', 'Gray', 'Recycled Fabric', 4, 'GreenFashion', '2023-03-03', 49.99, 'no-image.png', 19),
+(20, 'Recycled Women\'s Sweater', 'Stylish sweater for women made from recycled materials.', 2, 54.99, 'M', 'Gray', 'Recycled Fabric', 4, 'GreenFashion', '2023-03-03', 49.99, '18_2.png', 19),
 (21, 'Recycled PET Women\'s Jacket', 'Stylish jacket for women made from recycled PET bottles.', 8, 79.99, 'S', 'Black', 'Recycled PET', 5, 'GreenFashion', '2023-04-18', 74.99, 'no-image.png', 5),
 (22, 'Organic Linen Men\'s Shirt', 'Comfortable and eco-friendly linen shirt for men.', 1, 44.99, 'M', 'White', 'Organic Linen', 4, 'EcoStyle', '2023-04-05', 39.99, 'no-image.png', 11),
 (23, 'Sustainable Women\'s Sandals', 'Eco-conscious sandals made from sustainable materials.', 3, 39.99, 'US 7', 'Brown', 'Sustainable Fabric', 4, 'EcoFootwear', '2023-04-25', 34.99, 'no-image.png', 18),
-(24, 'Recycled Men\'s Belt', 'Stylish belt for men made from recycled materials.', 4, 19.99, 'One Size', 'Black', 'Recycled Leather', 4, 'GreenFashion', '2023-04-14', 14.99, 'no-image.png', 15),
+(24, 'Recycled Men\'s Belt', 'Stylish belt for men made from recycled materials.', 4, 19.99, 'One Size', 'Black', 'Recycled Leather', 4, 'GreenFashion', '2023-04-14', 14.99, 'https://pixabay.com/photos/belt-brown-leather-2146914/', 15),
 (25, 'Organic Cotton Women\'s Blouse', 'A sustainable blouse for women made from organic cotton.', 2, 49.99, 'L', 'Red', 'Organic Cotton', 4, 'EcoWear', '2023-04-08', 44.99, 'no-image.png', 3),
 (26, 'Recycled Denim Women\'s Jacket', 'Stylish jacket for women made from recycled denim material.', 8, 69.99, 'S', 'Denim Blue', 'Recycled Denim', 5, 'GreenFashion', '2023-04-21', 64.99, 'no-image.png', 8),
 (27, 'Sustainable Men\'s Beanie', 'A cozy and eco-friendly beanie for men made from sustainable materials.', 10, 24.99, 'One Size', 'Gray', 'Sustainable Fabric', 4, 'EcoStyle', '2023-04-30', 19.99, 'no-image.png', 9),
@@ -853,7 +877,7 @@ INSERT INTO `products` (`product_id`, `product_name`, `description`, `category_i
 (55, 'Sustainable Men\'s Chinos', 'Comfortable and eco-friendly chinos for men made from sustainable materials.', 1, 49.99, '32x34', 'Olive', 'Sustainable Fabric', 4, 'EcoStyle', '2023-08-15', 44.99, 'no-image.png', 18),
 (56, 'Recycled Women\'s Jumpsuit', 'Eco-conscious jumpsuit for women made from recycled materials.', 2, 59.99, 'S', 'Black', 'Recycled Fabric', 5, 'GreenFashion', '2023-08-20', 54.99, 'no-image.png', 16),
 (57, 'Organic Cotton Women\'s Leggings', 'Eco-friendly leggings for women made from organic cotton.', 2, 34.99, 'M', 'Black', 'Organic Cotton', 4, 'EcoStyle', '2023-08-25', 29.99, 'no-image.png', 6),
-(58, 'Sustainable Men\'s Sneakers', 'Comfortable and eco-friendly sneakers for men made from sustainable materials.', 3, 59.99, 'US 9', 'Gray', 'Sustainable Fabric', 4, 'EcoFootwear', '2023-08-30', 54.99, 'no-image.png', 20);
+(58, 'Sustainable Men\'s Sneakers', 'Comfortable and eco-friendly sneakers for men made from sustainable materials.', 3, 59.99, 'US 9', 'Gray', 'Sustainable Fabric', 4, 'EcoFootwear', '2023-08-30', 54.99, 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg', 20);
 
 -- --------------------------------------------------------
 
@@ -1099,7 +1123,9 @@ INSERT INTO `wishlist` (`wishlist_id`, `customer_id`, `product_id`, `added_date`
 (36, 13, 51, '2023-11-16', NULL, NULL),
 (37, 146, 29, '2023-11-17', NULL, NULL),
 (38, 19, 37, '2023-11-18', NULL, NULL),
-(39, 2, 53, '2024-02-27', 'Aoifes Christmas List 2024', 'Need to start putting money away for Christmas!!');
+(39, 2, 53, '2024-02-27', 'Aoifes Christmas List 2024', 'Need to start putting money away for Christmas!!'),
+(40, 153, 1, '2025-11-25', 'My Wishlist', ''),
+(41, 153, 2, '2025-11-25', 'My Wishlist', '');
 
 --
 -- Indexes for dumped tables
@@ -1196,13 +1222,13 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `cart_item_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cart_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
 
 --
 -- AUTO_INCREMENT for table `db_metadata`
