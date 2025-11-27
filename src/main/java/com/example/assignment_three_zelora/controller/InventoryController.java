@@ -46,9 +46,10 @@ public class InventoryController {
     public ResponseEntity<StockStatusDto> getProductStockStatus(@PathVariable Integer productId) {
         Optional<Product> product = productRepository.findById(productId);
         if (product.isPresent()) {
-            Optional<Inventory> inventory = inventoryRepository.findByProductId(product.get());
-            if (inventory.isPresent()) {
-                StockStatusDto dto = dtoMapperService.toStockStatusDto(inventory.get());
+            List<Inventory> inventories = inventoryRepository.findByProductId(product.get());
+            if (!inventories.isEmpty()) {
+                Inventory inventory = inventories.get(0);
+                StockStatusDto dto = dtoMapperService.toStockStatusDto(inventory);
                 return ResponseEntity.ok(dto);
             }
             // If no inventory record, assume out of stock
