@@ -3,7 +3,9 @@ import { useSearchParams, Link } from 'react-router-dom';
 import productService from '../../services/productService';
 import ProductImage from '../../components/ProductImage/ProductImage';
 import { useCart } from '../../hooks/useCart';
+import { useCompare } from '../../context/CompareContext';
 import { searchProducts, getSimilarProducts } from '../../utils/fuseSearch';
+import compareIcon from '../../assets/images/compareIcon.svg';
 import './SearchResults.css';
 
 // Price range options
@@ -28,6 +30,7 @@ export default function SearchResults() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const { addToCart } = useCart();
+  const { addToCompare, removeFromCompare, isInCompare } = useCompare();
   
   const [allProducts, setAllProducts] = useState([]);
   const [products, setProducts] = useState([]);
@@ -454,6 +457,20 @@ export default function SearchResults() {
                         <Link to={`/product/${product.productId}`} className="btn btn-outline view-details-btn">
                           View Details
                         </Link>
+                        <button 
+                          className={`compare-btn ${isInCompare(product.productId) ? 'active' : ''}`}
+                          onClick={() => {
+                            if (isInCompare(product.productId)) {
+                              removeFromCompare(product.productId);
+                            } else {
+                              addToCompare(product);
+                            }
+                          }}
+                          title={isInCompare(product.productId) ? 'Remove from compare' : 'Add to compare'}
+                        >
+                          <img src={compareIcon} alt="Compare" />
+                          {isInCompare(product.productId) ? 'Comparing' : 'Compare'}
+                        </button>
                       </div>
                     </div>
                   </article>

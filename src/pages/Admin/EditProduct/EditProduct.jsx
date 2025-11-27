@@ -44,7 +44,12 @@ const EditProduct = () => {
         });
         // Set existing image as preview
         if (product.featureImage) {
-          setImagePreview(product.featureImage);
+          // Ensure full URL if it's a relative path
+          let imageUrl = product.featureImage;
+          if (!imageUrl.startsWith('http')) {
+            imageUrl = `http://localhost:8080${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+          }
+          setImagePreview(imageUrl);
         }
         setLoading(false);
       } catch (err) {
@@ -104,13 +109,15 @@ const EditProduct = () => {
       
       const response = await axiosClient.post('/upload/image', uploadFormData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': undefined
+        },
+        withCredentials: true
       });
       
       return response.data.url;
     } catch (err) {
       console.error('Image upload failed:', err);
+      setError(err.response?.data?.error || 'Failed to upload image');
       throw new Error('Failed to upload image');
     } finally {
       setUploading(false);
@@ -336,7 +343,6 @@ const EditProduct = () => {
               value={formData.featureImage}
               onChange={handleChange}
               placeholder="Enter image URL (optional if uploading)"
-              disabled={!!imageFile}
             />
           </div>
 

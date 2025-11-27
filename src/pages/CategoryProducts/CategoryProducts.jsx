@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useParams, Link, useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import productService from '../../services/productService';
 import ProductImage from '../../components/ProductImage/ProductImage';
 import { useCart } from '../../hooks/useCart';
+import { useCompare } from '../../context/CompareContext';
+import compareIcon from '../../assets/images/compareIcon.svg';
 import './CategoryProducts.css';
 
-// Price range options
 const PRICE_RANGES = [
   { label: 'Under $25', min: 0, max: 25 },
   { label: '$25 - $50', min: 25, max: 50 },
@@ -14,96 +15,75 @@ const PRICE_RANGES = [
   { label: 'Over $200', min: 200, max: Infinity },
 ];
 
-// Rating options
-const RATING_OPTIONS = [4, 3, 2, 1];
-
-// Sort options
 const SORT_OPTIONS = [
   { value: 'featured', label: 'Featured' },
   { value: 'price-low', label: 'Price: Low to High' },
   { value: 'price-high', label: 'Price: High to Low' },
   { value: 'name-asc', label: 'Name: A to Z' },
   { value: 'name-desc', label: 'Name: Z to A' },
-  { value: 'newest', label: 'Newest Arrivals' },
 ];
 
 export default function CategoryProducts() {
-  const { categoryId, gender: genderParam } = useParams();
-  const [searchParams] = useSearchParams();
+  const { categoryId, gender } = useParams();
   const { addToCart } = useCart();
-  
-  // Get gender from route param OR query param
-  const gender = genderParam || searchParams.get('gender');
-  
-  const [products, setProducts] = useState([]);
+  const { addToCompare, removeFromCompare, isInCompare } = useCompare();
+
+  const [allProducts, setAllProducts] = useState([]);
   const [category, setCategory] = useState(null);
   const [allCategories, setAllCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  // Filter states
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedPriceRange, setSelectedPriceRange] = useState(null);
-  const [selectedRating, setSelectedRating] = useState(null);
   const [sortBy, setSortBy] = useState('featured');
   const [showFilters, setShowFilters] = useState(false);
 
-  const fetchCategoryAndProducts = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      
-      // Fetch all categories for sidebar
+
+      // Fetch categories
       const categoriesResponse = await productService.getCategories();
       const categoriesList = Array.isArray(categoriesResponse.data) ? categoriesResponse.data : [];
       setAllCategories(categoriesList);
-      
+
       // Fetch category details
       const categoryResponse = await productService.getCategoryById(categoryId);
       setCategory(categoryResponse.data);
-      
-      // Fetch products by category from backend
+
+      // Fetch products by category
       const productsResponse = await productService.getProductsByCategory(categoryId);
       const productsList = Array.isArray(productsResponse.data) ? productsResponse.data : [];
+      setAllProducts(productsList);
       
-      setProducts(productsList);
       setError(null);
     } catch (err) {
       console.error('Error fetching data:', err);
       setError('Failed to load products. Please try again.');
-      setProducts([]);
+      setAllProducts([]);
     } finally {
       setLoading(false);
     }
   }, [categoryId]);
 
   useEffect(() => {
-    fetchCategoryAndProducts();
-    // Reset filters when category changes
+    fetchData();
+    setSelectedCategory(null);
     setSelectedPriceRange(null);
-    setSelectedRating(null);
     setSortBy('featured');
-  }, [fetchCategoryAndProducts]);
+    setShowFilters(false);
+  }, [fetchData]);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let result = [...products];
-    
-    // Note: Gender-based filtering is handled by backend
-    // Products returned are already filtered to the category's gender
-    // No additional filtering needed here
-    
-    // Apply price filter
+    let result = [...allProducts];
+
     if (selectedPriceRange !== null) {
       const range = PRICE_RANGES[selectedPriceRange];
       result = result.filter(p => p.price >= range.min && p.price < range.max);
     }
-    
-    // Apply rating filter (mock - products don't have ratings yet)
-    if (selectedRating !== null) {
-      // For now, just show all products since we don't have real rating data
-      // In a real app: result = result.filter(p => p.rating >= selectedRating);
-    }
-    
-    // Apply sorting
+
     switch (sortBy) {
       case 'price-low':
         result.sort((a, b) => a.price - b.price);
@@ -117,20 +97,29 @@ export default function CategoryProducts() {
       case 'name-desc':
         result.sort((a, b) => b.productName.localeCompare(a.productName));
         break;
-      case 'newest':
-        result.sort((a, b) => b.productId - a.productId);
-        break;
       default:
-        // featured - keep original order
         break;
     }
-    
+
     return result;
-  }, [products, selectedPriceRange, selectedRating, sortBy]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [allProducts, selectedPriceRange, sortBy]);
+
+  const sidebarCategories = useMemo(() => {
+    if (!gender) return allCategories;
+
+    const WOMENS_CATEGORY_IDS = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const MENS_CATEGORY_IDS = [1, 3, 4, 5, 6, 8, 9, 10];
+
+    const genderLower = gender.toLowerCase();
+    const allowedIds = genderLower === 'women' ? WOMENS_CATEGORY_IDS : MENS_CATEGORY_IDS;
+
+    return allCategories.filter(cat => allowedIds.includes(cat.categoryId));
+  }, [allCategories, gender]);
+
+  const hasActiveFilters = selectedPriceRange !== null || sortBy !== 'featured';
 
   const clearFilters = () => {
     setSelectedPriceRange(null);
-    setSelectedRating(null);
     setSortBy('featured');
   };
 
@@ -138,41 +127,15 @@ export default function CategoryProducts() {
     addToCart(product.productId, 1);
   };
 
-  // Generate star rating display with SVG icons
-  const renderStars = (rating) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <span key={i} className={`star ${i <= rating ? 'filled' : ''}`}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill={i <= rating ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-          </svg>
-        </span>
-      );
-    }
-    return stars;
+  const renderStars = (rating = 4) => {
+    return [...Array(5)].map((_, i) => (
+      <span key={i} className={`star ${i < rating ? 'filled' : ''}`}>★</span>
+    ));
   };
-
-  // Filter categories by gender if applicable
-  const sidebarCategories = useMemo(() => {
-    if (gender) {
-      // Define category IDs by gender (matching Collection.jsx)
-      const WOMENS_CATEGORY_IDS = [2, 3, 4, 5, 6, 7, 8, 9, 10];
-      const MENS_CATEGORY_IDS = [1, 3, 4, 5, 6, 8, 9, 10];
-      
-      const genderLower = gender.toLowerCase();
-      const allowedIds = genderLower === 'women' ? WOMENS_CATEGORY_IDS : MENS_CATEGORY_IDS;
-      
-      return allCategories.filter(cat => allowedIds.includes(cat.categoryId));
-    }
-    return allCategories;
-  }, [allCategories, gender]);
-
-  const hasActiveFilters = selectedPriceRange !== null || selectedRating !== null || sortBy !== 'featured';
 
   if (loading) {
     return (
-      <div className="category-products-page">
+      <div className="category-page">
         <div className="loading-container">
           <div className="loading-spinner"></div>
           <p>Loading products...</p>
@@ -183,76 +146,56 @@ export default function CategoryProducts() {
 
   if (error) {
     return (
-      <div className="category-products-page">
+      <div className="category-page">
         <div className="error-container">
-          <span className="error-icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-              <line x1="12" y1="9" x2="12" y2="13"></line>
-              <line x1="12" y1="17" x2="12.01" y2="17"></line>
-            </svg>
-          </span>
-          <h2>Something went wrong</h2>
+          <h2>Error</h2>
           <p>{error}</p>
-          <button className="btn btn-primary" onClick={fetchCategoryAndProducts}>
-            Try Again
-          </button>
+          <button className="btn btn-primary" onClick={fetchData}>Try Again</button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="category-products-page">
-      {/* Breadcrumb */}
-      <nav className="breadcrumb">
-        <Link to="/">Home</Link>
-        <span className="separator">/</span>
-        {gender && (
-          <>
-            <Link to={`/collection/${gender}`}>{gender.charAt(0).toUpperCase() + gender.slice(1)}'s</Link>
-            <span className="separator">/</span>
-          </>
-        )}
-        <span className="current">{category?.categoryName || 'Products'}</span>
-      </nav>
-
-      {/* Page Header */}
-      <div className="category-header">
+    <div className="category-page">
+      {/* Header */}
+      <div className="category-header-section">
         <h1>{category?.categoryName || 'Products'}</h1>
         <p className="results-count">
           {filteredProducts.length} {filteredProducts.length === 1 ? 'result' : 'results'}
-          {hasActiveFilters && <button className="clear-filters" onClick={clearFilters}>Clear all filters</button>}
         </p>
+        {hasActiveFilters && (
+          <button className="clear-filters-btn" onClick={clearFilters}>
+            Clear Filters
+          </button>
+        )}
       </div>
 
       {/* Mobile Filter Toggle */}
-      <button className="mobile-filter-toggle" onClick={() => setShowFilters(!showFilters)}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-        </svg>
-        Filters
-        {hasActiveFilters && <span className="filter-badge"></span>}
+      <button 
+        className="mobile-filter-toggle"
+        onClick={() => setShowFilters(!showFilters)}
+      >
+        ☰ Filters
       </button>
 
-      <div className="category-content">
-        {/* Filter Sidebar */}
-        <aside className={`filters-sidebar ${showFilters ? 'show' : ''}`}>
-          <div className="filters-header">
-            <h3>Filters</h3>
-            <button className="close-filters" onClick={() => setShowFilters(false)}>×</button>
-          </div>
+      {/* Main Content */}
+      <div className="category-main">
+        {/* Sidebar */}
+        <aside className={`category-sidebar ${showFilters ? 'open' : ''}`}>
+          <h3>Filters</h3>
 
-          {/* Categories */}
+          {/* Categories Filter */}
           {sidebarCategories.length > 0 && (
-            <div className="filter-section">
+            <div className="filter-group">
               <h4>Categories</h4>
-              <ul className="category-list">
+              <ul className="filter-list">
                 {sidebarCategories.map(cat => (
                   <li key={cat.categoryId}>
                     <Link 
                       to={gender ? `/collection/${gender}/category/${cat.categoryId}` : `/category/${cat.categoryId}`}
                       className={cat.categoryId === parseInt(categoryId) ? 'active' : ''}
+                      onClick={() => setShowFilters(false)}
                     >
                       {cat.categoryName}
                     </Link>
@@ -262,20 +205,20 @@ export default function CategoryProducts() {
             </div>
           )}
 
-          {/* Price Range */}
-          <div className="filter-section">
+          {/* Price Filter */}
+          <div className="filter-group">
             <h4>Price</h4>
             <ul className="filter-list">
               {PRICE_RANGES.map((range, idx) => (
                 <li key={idx}>
-                  <label className="filter-checkbox">
+                  <label className="checkbox-label">
                     <input
                       type="radio"
                       name="price"
                       checked={selectedPriceRange === idx}
                       onChange={() => setSelectedPriceRange(selectedPriceRange === idx ? null : idx)}
                     />
-                    <span className="checkmark"></span>
+                    <span className="checkbox-custom"></span>
                     {range.label}
                   </label>
                 </li>
@@ -283,32 +226,17 @@ export default function CategoryProducts() {
             </ul>
           </div>
 
-          {/* Customer Rating */}
-          <div className="filter-section">
-            <h4>Customer Rating</h4>
-            <ul className="filter-list">
-              {RATING_OPTIONS.map(rating => (
-                <li key={rating}>
-                  <label className="filter-checkbox">
-                    <input
-                      type="radio"
-                      name="rating"
-                      checked={selectedRating === rating}
-                      onChange={() => setSelectedRating(selectedRating === rating ? null : rating)}
-                    />
-                    <span className="checkmark"></span>
-                    <span className="rating-stars">
-                      {renderStars(rating)} & Up
-                    </span>
-                  </label>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Close button for mobile */}
+          <button 
+            className="close-sidebar-btn"
+            onClick={() => setShowFilters(false)}
+          >
+            ✕ Close
+          </button>
         </aside>
 
-        {/* Products Section */}
-        <main className="products-main">
+        {/* Products Area */}
+        <div className="products-area">
           {/* Sort Bar */}
           <div className="sort-bar">
             <label>
@@ -321,83 +249,78 @@ export default function CategoryProducts() {
             </label>
           </div>
 
-          {/* Products List - Vertical Layout */}
+          {/* Products Grid */}
           {filteredProducts.length === 0 ? (
             <div className="no-products">
-              <span className="no-products-icon">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                  <line x1="3" y1="6" x2="21" y2="6"></line>
-                  <path d="M16 10a4 4 0 0 1-8 0"></path>
-                </svg>
-              </span>
-              <h3>No products found</h3>
-              <p>Try adjusting your filters or browse other categories.</p>
-              {hasActiveFilters && (
-                <button className="btn btn-outline" onClick={clearFilters}>
-                  Clear Filters
-                </button>
-              )}
+              <p>No products found</p>
             </div>
           ) : (
-            <div className="products-list">
+            <div className="products-grid">
               {filteredProducts.map(product => (
-                <article key={product.productId} className="product-card-horizontal">
-                  <Link to={`/product/${product.productId}`} className="product-image-link">
+                <div key={product.productId} className="product-card">
+                  <Link to={`/product/${product.productId}`} className="product-image-wrapper">
                     <ProductImage
                       productId={product.productId}
                       featureImage={product.featureImage}
                       alt={product.productName}
-                      className="product-image"
                       size="large"
                     />
                   </Link>
-                  
-                  <div className="product-info">
-                    <Link to={`/product/${product.productId}`} className="product-name">
+
+                  <div className="product-card-body">
+                    <Link to={`/product/${product.productId}`} className="product-title">
                       {product.productName}
                     </Link>
-                    
+
                     <div className="product-rating">
                       {renderStars(4)}
-                      <span className="rating-count">(128)</span>
+                      <span className="rating-text">(128)</span>
                     </div>
-                    
-                    <p className="product-description">
-                      {product.description?.length > 200 
-                        ? product.description.substring(0, 200) + '...' 
-                        : product.description}
+
+                    <p className="product-desc">
+                      {product.description?.substring(0, 100)}...
                     </p>
-                    
-                    <div className="product-price">
-                      <span className="current-price">${product.price?.toFixed(2)}</span>
-                      {product.originalPrice && product.originalPrice > product.price && (
-                        <>
-                          <span className="original-price">${product.originalPrice.toFixed(2)}</span>
-                          <span className="discount-badge">
-                            {Math.round((1 - product.price / product.originalPrice) * 100)}% off
-                          </span>
-                        </>
+
+                    <div className="product-price-section">
+                      <span className="price">${product.price?.toFixed(2)}</span>
+                      {product.originalPrice && (
+                        <span className="original-price">${product.originalPrice.toFixed(2)}</span>
                       )}
                     </div>
-                    
+
                     <div className="product-actions">
                       <button 
-                        className="btn btn-primary add-to-cart-btn"
+                        className="btn-add-cart"
                         onClick={() => handleAddToCart(product)}
                       >
                         Add to Cart
                       </button>
-                      <Link to={`/product/${product.productId}`} className="btn btn-outline view-details-btn">
-                        View Details
+                      <Link 
+                        to={`/product/${product.productId}`} 
+                        className="btn-details"
+                      >
+                        Details
                       </Link>
+                      <button
+                        className={`btn-compare ${isInCompare(product.productId) ? 'active' : ''}`}
+                        onClick={() => {
+                          if (isInCompare(product.productId)) {
+                            removeFromCompare(product.productId);
+                          } else {
+                            addToCompare(product);
+                          }
+                        }}
+                      >
+                        <img src={compareIcon} alt="" />
+                        Compare
+                      </button>
                     </div>
                   </div>
-                </article>
+                </div>
               ))}
             </div>
           )}
-        </main>
+        </div>
       </div>
     </div>
   );

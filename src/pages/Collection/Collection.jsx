@@ -240,7 +240,7 @@ const Collection = () => {
                 return (
                   <Link 
                     key={categoryId}
-                    to={`/category/${categoryId}?gender=${gender}`}
+                    to={`/collection/${gender}/category/${categoryId}`}
                     className="category-card"
                     style={{ backgroundImage: `url(${categoryImage})` }}
                   >

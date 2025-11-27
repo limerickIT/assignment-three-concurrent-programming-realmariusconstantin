@@ -150,6 +150,8 @@
   height: fit-content;
   position: sticky;
   top: 100px;
+  z-index: 50;
+  overflow-x: visible;
 }
 
 .filters-header {

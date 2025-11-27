@@ -71,13 +71,15 @@ export default function CreateProduct() {
       
       const response = await axiosClient.post('/upload/image', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': undefined
+        },
+        withCredentials: true
       });
       
       return response.data.url;
     } catch (err) {
       console.error('Image upload failed:', err);
+      setError(err.response?.data?.error || 'Failed to upload image');
       throw new Error('Failed to upload image');
     } finally {
       setUploading(false);
@@ -285,7 +287,6 @@ export default function CreateProduct() {
               value={formData.featureImage}
               onChange={handleChange}
               placeholder="Enter image URL (optional if uploading)"
-              disabled={!!imageFile}
             />
           </div>
 

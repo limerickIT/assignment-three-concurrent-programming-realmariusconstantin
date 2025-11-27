@@ -180,7 +180,7 @@ export default function SearchBar() {
                   <div className="suggestion-info">
                     <h4>{renderHighlightedName(product.productName)}</h4>
                     <div className="suggestion-meta">
-                      {product.categoryId?.categoryName && (
+                      {product.categoryId && typeof product.categoryId === 'object' && product.categoryId.categoryName && (
                         <span className="suggestion-category">
                           {product.categoryId.categoryName}
                         </span>

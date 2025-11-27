@@ -217,9 +217,9 @@
 /* Products Grid - 6 cards evenly spaced */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-xl);
-  max-width: 1200px;
+  max-width: 700px;
   margin: 0 auto;
 }
 

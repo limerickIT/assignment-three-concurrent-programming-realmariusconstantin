@@ -36,9 +36,9 @@ const Home = () => {
       
       const productsRes = await axiosClient.get('/products');
       
-      // Get first 6 products as featured, handle errors gracefully
+      // Get first 8 products as featured, handle errors gracefully
       const products = Array.isArray(productsRes.data) ? productsRes.data : [];
-      setFeaturedProducts(products.slice(0, 6));
+      setFeaturedProducts(products.slice(0, 8));
       
     } catch (err) {
       console.error('Error fetching data:', err);

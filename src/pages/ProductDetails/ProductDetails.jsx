@@ -4,6 +4,8 @@ import productService from "../../services/productService";
 import ProductImage from "../../components/ProductImage/ProductImage";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../hooks/useAuth";
+import { useCompare } from "../../context/CompareContext";
+import compareIcon from "../../assets/images/compareIcon.svg";
 import "./ProductDetails.css";
 
 // Mock reviews data - in production this would come from an API
@@ -19,6 +21,7 @@ export default function ProductDetails() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const { user } = useAuth();
+  const { addToCompare, removeFromCompare, isInCompare } = useCompare();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -322,6 +325,20 @@ export default function ProductDetails() {
                   Add to Cart
                 </>
               )}
+            </button>
+            <button 
+              className={`btn btn-outline compare-btn ${isInCompare(parseInt(id)) ? 'active' : ''}`}
+              onClick={() => {
+                if (isInCompare(parseInt(id))) {
+                  removeFromCompare(parseInt(id));
+                } else {
+                  addToCompare(product);
+                }
+              }}
+              title={isInCompare(parseInt(id)) ? 'Remove from compare' : 'Add to compare'}
+            >
+              <img src={compareIcon} alt="Compare" />
+              {isInCompare(parseInt(id)) ? 'Comparing' : 'Compare'}
             </button>
             <button className="btn btn-outline wishlist-btn">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
