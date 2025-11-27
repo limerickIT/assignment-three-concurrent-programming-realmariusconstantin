@@ -119,6 +119,7 @@ public class DtoMapperService {
                 customerName += " " + review.getCustomerId().getLastName();
             }
             dto.setCustomerName(customerName);
+            dto.setCustomerCity(review.getCustomerId().getCity());
         }
         
         return dto;

@@ -25,6 +25,10 @@ public class ProductDetailDto {
     private Integer categoryId;
     private String categoryName;
     private Integer stockQuantity;
+    private Integer quantityReserved;
+    private Integer availableQuantity;
+    private Integer reorderPoint;
+    private String stockStatus;
     private boolean inStock;
     private List<ReviewDto> reviews;
     private Double averageRating;
@@ -214,5 +218,37 @@ public class ProductDetailDto {
 
     public void setTotalReviews(Integer totalReviews) {
         this.totalReviews = totalReviews;
+    }
+
+    public Integer getQuantityReserved() {
+        return quantityReserved;
+    }
+
+    public void setQuantityReserved(Integer quantityReserved) {
+        this.quantityReserved = quantityReserved;
+    }
+
+    public Integer getAvailableQuantity() {
+        return availableQuantity;
+    }
+
+    public void setAvailableQuantity(Integer availableQuantity) {
+        this.availableQuantity = availableQuantity;
+    }
+
+    public Integer getReorderPoint() {
+        return reorderPoint;
+    }
+
+    public void setReorderPoint(Integer reorderPoint) {
+        this.reorderPoint = reorderPoint;
+    }
+
+    public String getStockStatus() {
+        return stockStatus;
+    }
+
+    public void setStockStatus(String stockStatus) {
+        this.stockStatus = stockStatus;
     }
 }

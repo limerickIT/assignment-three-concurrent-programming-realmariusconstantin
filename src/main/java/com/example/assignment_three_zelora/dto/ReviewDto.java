@@ -13,6 +13,7 @@ public class ReviewDto {
     private String productName;
     private Integer customerId;
     private String customerName;
+    private String customerCity;
     private Integer rating;
     private String reviewText;
     private Date reviewDate;
@@ -24,13 +25,14 @@ public class ReviewDto {
     
     // Full constructor
     public ReviewDto(Integer reviewId, Integer productId, String productName,
-                    Integer customerId, String customerName, Integer rating,
+                    Integer customerId, String customerName, String customerCity, Integer rating,
                     String reviewText, Date reviewDate, Boolean flaggedAsSpam) {
         this.reviewId = reviewId;
         this.productId = productId;
         this.productName = productName;
         this.customerId = customerId;
         this.customerName = customerName;
+        this.customerCity = customerCity;
         this.rating = rating;
         this.reviewText = reviewText;
         this.reviewDate = reviewDate;
@@ -76,6 +78,14 @@ public class ReviewDto {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getCustomerCity() {
+        return customerCity;
+    }
+
+    public void setCustomerCity(String customerCity) {
+        this.customerCity = customerCity;
     }
 
     public Integer getRating() {

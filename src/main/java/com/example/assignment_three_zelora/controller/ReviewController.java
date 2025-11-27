@@ -49,12 +49,13 @@ public class ReviewController {
                 .orElse(ResponseEntity.notFound().build());
     }
     
-    // Get reviews for a product
+    // Get reviews for a product (filtered by rating >= 3 and not spam)
     @GetMapping("/reviews/product/{productId}")
     public ResponseEntity<List<ReviewDto>> getReviewsByProduct(@PathVariable Integer productId) {
         Optional<Product> product = productRepository.findById(productId);
         if (product.isPresent()) {
-            List<Review> reviews = reviewRepository.findByProductId(product.get());
+            // Filter reviews with rating >= 3 (as per assignment requirement)
+            List<Review> reviews = reviewRepository.findByProductIdAndRatingGreaterThanEqual(product.get(), 3);
             List<ReviewDto> dtos = reviews.stream()
                     .filter(r -> !Boolean.TRUE.equals(r.getFlaggedAsSpam()))
                     .map(dtoMapperService::toReviewDto)
